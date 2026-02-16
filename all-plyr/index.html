@@ -228,53 +228,7 @@ async function detectAdblock() {
   return detected;
 }
 
-// ----------------- Brave Shields Detection -----------------
-async function detectBraveShields() {
-  try {
-    let res = await fetch("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js", {
-      method: "GET",
-      cache: "no-store",
-      mode: "no-cors"
-    });
 
-    if (res.type === "opaque") {
-      try {
-        const buf = await res.clone().arrayBuffer();
-        console.log("🟡 Brave Response Size:", buf.byteLength);
-
-        // Corrected Logic:
-        // Size < 100 = Shields OFF
-        // Size >= 100 = Shields ON
-        if (buf.byteLength < 100) {
-          return false; // Shields OFF
-        } else {
-          return true;  // Shields ON
-        }
-      } catch (e) {
-        console.warn("🟡 Brave fetch blocked", e);
-        return true; // Shields ON
-      }
-    }
-    return true; // default treat as ON
-  } catch (e) {
-    console.error("🛑 Brave Shields hard blocked", e);
-    return true; // Shields ON
-  }
-}
-
-// ----------------- Main -----------------
-window.addEventListener("load", async () => {
-  const shieldsOn = await detectBraveShields();
-  if (shieldsOn) {
-    showPopup("Brave Shields Detected");
-    return;
-  }
-
-  const adblocker = await detectAdblock();
-  if (adblocker) {
-    showPopup("Adblock Detected");
-  }
-});
 </script>
 
 </body>
