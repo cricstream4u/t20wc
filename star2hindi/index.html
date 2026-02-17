@@ -308,7 +308,7 @@
       // --------------------------------------------------------------
       let channels = [];
       try {
-        const channelsResp = await fetch('channels.json'); // relative path – assume same folder
+        const channelsResp = await fetch('https://allrounderid.pages.dev/api/jiotv2.json'); // relative path – assume same folder
         if (!channelsResp.ok) throw new Error('HTTP '+channelsResp.status);
         channels = await channelsResp.json();
         console.log('✅ channels.json loaded', channels.length);
