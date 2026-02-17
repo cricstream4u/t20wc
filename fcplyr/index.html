@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CineArena</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'&gt;&lt;defs&gt;&lt;linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'&gt;&lt;stop offset='0%' style='stop-color:%231E40AF;stop-opacity:1' /&gt;&lt;stop offset='100%' style='stop-color:%233B82F6;stop-opacity:1' /&gt;&lt;/linearGradient&gt;&lt;/defs&gt;&lt;rect x='5' y='5' width='50' height='50' rx='10' fill='url(%23grad)'/&gt;&lt;text x='30' y='38' text-anchor='middle' font-family='Arial, sans-serif' font-size='24' font-weight='bold' fill='white'&gt;CA&lt;/text&gt;&lt;/svg&gt;">
+    
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <meta name="referrer" content="no-referrer">
+
+  <!-- Plyr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.6.12/dist/plyr.css">
+
+  <style>
+    body {
+      background-color: #000;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    html, body {
+      height: 100%;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+    }
+    .plyr {
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <video id="player" playsinline controls></video>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.1.4/dist/hls.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/plyr@3.6.12/dist/plyr.min.js"></script>
+
+  <script>
+    const _0x586550=_0x1809;function _0x6d36(){const _0x27966a=['src','https://raw.githubusercontent.com/Jitendra-unatti/fancode/refs/heads/main/data/fancode.json','20860992rTAvhz','https://t.me/cine_arena','Stream\x20not\x20found\x20for\x20ID\x20','5sROizW','self','fullscreenchange','8585096qXlmuJ','fullscreen','get','volume','STREAMING_CDN','settings','1987880TSrmzM','40tbXrCK','DOMContentLoaded','Entered\x20PiP','dai_stream','7FysVRp','1IBUTvj','Error\x20loading\x20JSON:','length','MANIFEST_PARSED','application/vnd.apple.mpegurl','13IpfGSd','load','isSupported','4710739BLwDwO','quality','addEventListener','<p\x20style=\x22color:white;text-align:center\x22>No\x20playable\x20stream\x20found\x20for\x20ID\x20','fullscreenElement','filter','levels','Orientation\x20lock\x20failed:','193794BYuMtl','canPlayType','currentLevel','top','681010IBiIdZ','getElementById','cdn','attachMedia','search','hindi_stream','sony_cdn','<div\x20style=\x22color:white;text-align:center\x22>Ab\x20to\x20copy\x20mat\x20kar\x20chutiye</div>','cloudfront_cdn','match_id','log','leavepictureinpicture','body','matches','pip','map','99PnHIlm','find','height','innerHTML','json','</p>','location','4392012znlhLb','player','lock','adfree_stream','Exited\x20PiP','orientation','play','<p\x20style=\x22color:white;text-align:center\x22>No\x20ID\x20provided\x20(?id=)</p>','dai_google_cdn','Events','mute'];_0x6d36=function(){return _0x27966a;};return _0x6d36();}(function(_0x33b237,_0x62e258){const _0x26514c=_0x1809,_0x3c9e4a=_0x33b237();while(!![]){try{const _0x2e1e36=-parseInt(_0x26514c(0x148))/0x1*(-parseInt(_0x26514c(0x142))/0x2)+parseInt(_0x26514c(0x10e))/0x3*(-parseInt(_0x26514c(0x143))/0x4)+parseInt(_0x26514c(0x139))/0x5*(parseInt(_0x26514c(0x129))/0x6)+parseInt(_0x26514c(0x147))/0x7*(-parseInt(_0x26514c(0x13c))/0x8)+parseInt(_0x26514c(0x122))/0x9*(-parseInt(_0x26514c(0x112))/0xa)+-parseInt(_0x26514c(0x150))/0xb+parseInt(_0x26514c(0x136))/0xc*(parseInt(_0x26514c(0x14d))/0xd);if(_0x2e1e36===_0x62e258)break;else _0x3c9e4a['push'](_0x3c9e4a['shift']());}catch(_0x500ae5){_0x3c9e4a['push'](_0x3c9e4a['shift']());}}}(_0x6d36,0x8aa49));async function getStreamUrl(_0x3755eb,_0x2222c9){const _0x5e58dd=_0x1809;try{const _0x3e1f7b=await fetch(_0x5e58dd(0x135)),_0x1f24fa=await _0x3e1f7b[_0x5e58dd(0x126)](),_0x14870b=_0x1f24fa[_0x5e58dd(0x11f)][_0x5e58dd(0x123)](_0x17eb2d=>_0x17eb2d[_0x5e58dd(0x11b)]==_0x3755eb);if(!_0x14870b)throw new Error(_0x5e58dd(0x138)+_0x3755eb);const _0x4b9b9c={'adfree_stream':_0x14870b[_0x5e58dd(0x12c)],'dai_stream':_0x14870b[_0x5e58dd(0x146)],'Primary_Playback_URL':_0x14870b['STREAMING_CDN']?.['Primary_Playback_URL'],'fancode_cdn':_0x14870b['STREAMING_CDN']?.['fancode_cdn'],'dai_google_cdn':_0x14870b[_0x5e58dd(0x140)]?.[_0x5e58dd(0x131)],'cloudfront_cdn':_0x14870b[_0x5e58dd(0x140)]?.[_0x5e58dd(0x11a)],'sony_cdn':_0x14870b['STREAMING_CDN']?.[_0x5e58dd(0x118)],'hindi_stream':_0x14870b[_0x5e58dd(0x140)]?.[_0x5e58dd(0x117)]};if(_0x2222c9&&_0x4b9b9c[_0x2222c9]&&_0x4b9b9c[_0x2222c9]!=='Unavailable')return _0x4b9b9c[_0x2222c9];const _0x14d8c9=Object['values'](_0x4b9b9c)[_0x5e58dd(0x10b)](_0x2f574f=>_0x2f574f&&_0x2f574f!=='Unavailable');return _0x14d8c9[_0x5e58dd(0x14a)]>0x0?_0x14d8c9[0x0]:null;}catch(_0x42f000){return console['error'](_0x5e58dd(0x149),_0x42f000),null;}}document[_0x586550(0x108)](_0x586550(0x144),async()=>{const _0x547901=_0x586550,_0x492555=document[_0x547901(0x113)](_0x547901(0x12a)),_0x2a495c=new URLSearchParams(window[_0x547901(0x128)][_0x547901(0x116)]),_0x462310=_0x2a495c['get']('id'),_0x4270ad=_0x2a495c[_0x547901(0x13e)](_0x547901(0x114));if(!_0x462310){document[_0x547901(0x11e)]['innerHTML']=_0x547901(0x130);return;}const _0x3db403=await getStreamUrl(_0x462310,_0x4270ad);if(!_0x3db403){document[_0x547901(0x11e)]['innerHTML']=_0x547901(0x109)+_0x462310+_0x547901(0x127);return;}const _0x267a36={'controls':['play-large',_0x547901(0x12f),_0x547901(0x133),_0x547901(0x13f),_0x547901(0x141),_0x547901(0x120),_0x547901(0x13d)]};if(Hls[_0x547901(0x14f)]()){const _0xd89aee=new Hls({'maxMaxBufferLength':0x64});_0xd89aee['loadSource'](_0x3db403),_0xd89aee[_0x547901(0x115)](_0x492555),_0xd89aee['on'](Hls[_0x547901(0x132)][_0x547901(0x14b)],()=>{const _0x262283=_0x547901,_0xd4495a=_0xd89aee[_0x262283(0x10c)][_0x262283(0x121)](_0x56e0a3=>_0x56e0a3[_0x262283(0x124)])[_0x262283(0x10b)](Boolean),_0x557f7b=_0xd4495a[0x0]||0x168;_0x267a36[_0x262283(0x107)]={'default':_0x557f7b,'options':_0xd4495a,'forced':!![],'onChange':_0xa365e1=>{_0xd89aee['levels']['forEach']((_0x1be02b,_0x397ff4)=>{const _0x110046=_0x1809;if(_0x1be02b['height']===_0xa365e1)_0xd89aee[_0x110046(0x110)]=_0x397ff4;});}};const _0xb702a1=new Plyr(_0x492555,_0x267a36);document[_0x262283(0x108)](_0x262283(0x13b),()=>{const _0x36e387=_0x262283;document[_0x36e387(0x10a)]&&screen[_0x36e387(0x12e)]?.[_0x36e387(0x12b)]&&screen[_0x36e387(0x12e)]['lock']('landscape')['catch'](_0x550570=>console['warn'](_0x36e387(0x10d),_0x550570));});});}else _0x492555[_0x547901(0x10f)](_0x547901(0x14c))?(_0x492555[_0x547901(0x134)]=_0x3db403,new Plyr(_0x492555,_0x267a36)):document[_0x547901(0x11e)][_0x547901(0x125)]='<p\x20style=\x22color:white;text-align:center\x22>Your\x20browser\x20does\x20not\x20support\x20HLS\x20playback.</p>';_0x492555[_0x547901(0x108)]('enterpictureinpicture',()=>console['log'](_0x547901(0x145))),_0x492555[_0x547901(0x108)](_0x547901(0x11d),()=>console[_0x547901(0x11c)](_0x547901(0x12d)));});function _0x1809(_0x345157,_0x20c15b){_0x345157=_0x345157-0x107;const _0x6d3663=_0x6d36();let _0x180932=_0x6d3663[_0x345157];return _0x180932;}window[_0x586550(0x111)]!==window[_0x586550(0x13a)]&&document[_0x586550(0x108)](_0x586550(0x144),function(){const _0xd3c05c=_0x586550;document[_0xd3c05c(0x11e)][_0xd3c05c(0x125)]=_0xd3c05c(0x119);});window[_0x586550(0x108)](_0x586550(0x14e),function(){const _0x4da96a=_0x586550;window['confirm']('Join\x20@CineArena\x20for\x20more\x20live\x20links')&&(window[_0x4da96a(0x128)]['href']=_0x4da96a(0x137));});
+  </script>
+</body>
+</html>
