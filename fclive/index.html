@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1"/>
+        <meta name="referrer" content="no-referrer"/>
+         
+        <title>FancodeC Live</title>
+        <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><defs><linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%231E40AF;stop-opacity:1' /><stop offset='100%' style='stop-color:%233B82F6;stop-opacity:1' /></linearGradient></defs><rect x='5' y='5' width='50' height='50' rx='10' fill='url(%23grad)'/><text x='30' y='38' text-anchor='middle' font-family='Arial, sans-serif' font-size='24' font-weight='bold' fill='white'>CA</text></svg>">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.css"/>
+          <!-- Ads -->
+    <script src="https://concurfortunes.com/06/25/ff/0625ff017a6deaffd50d5bf396619101.js"></script>
+
+        <style>
+            /* Your existing CSS styles remain the same */
+            :root {
+            --primary: #1a2b6d;
+            --secondary: #2a4ab0;
+            --accent: #FF8C42;
+            --light: #f0f5ff;
+            --dark: #0c1a4a;
+            --card-bg: rgba(18, 33, 85, 0.6);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0c1a4a 0%, #1a2b6d 100%);
+            min-height: 100vh;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(42, 74, 176, 0.15) 0%, transparent 20%), 
+                        radial-gradient(circle at 90% 80%, rgba(255, 140, 66, 0.15) 0%, transparent 20%);
+            z-index: -1;
+        }
+            .header-gradient {
+                background: rgba(26, 43, 109, 0.85);
+                backdrop-filter: blur(12px);
+                box-shadow: 0 4px 12px rgba(0,0,0,.15);
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .site-container {
+                max-width: 1280px;
+                margin: 0 auto;
+                padding: 0 1rem;
+                width: 100%;
+            }
+
+            .matches-grid-title {
+                text-align: center;
+                font-size: 1.8rem;
+                font-weight: 700;
+                margin-bottom: 1.5rem;
+                color: white;
+                position: relative;
+                padding-bottom: 15px;
+            }
+
+            .matches-grid-title::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 100px;
+                height: 4px;
+                background: var(--accent);
+                border-radius: 2px;
+            }
+
+            .match-card {
+    transition: all .3s ease;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    background: rgba(18, 33, 85, 0.6);
+    position: relative;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    transform: translateY(0);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 320px;
+}
+
+.match-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0,0,0,.25);
+    background: rgba(26, 43, 109, 0.7);
+    border-color: rgba(255,140,66,0.3);
+}
+            .category-badge {
+                position: absolute;
+                top: 12px;
+                left: 12px;
+                z-index: 10;
+                font-size: 20px;
+                background: rgba(255,255,255,0.9);
+                border-radius: 50%;
+                width: 36px;
+                height: 36px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 8px rgba(0,0,0,.2);
+                border: 2px solid var(--accent);
+                color: var(--dark);
+            }
+
+            .status-badge {
+                padding: 6px 15px;
+                border-radius: 20px;
+                font-size: 0.8rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            .status-live {
+                background: linear-gradient(135deg, #ff5252 0%, #e53935 100%);
+                color: white;
+                animation: pulse 1.5s infinite;
+            }
+
+            .status-upcoming {
+                background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+                color: white;
+            }
+
+            .status-completed {
+                background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
+                color: white;
+            }
+
+            .stream-btn {
+                transition: all .3s ease;
+                border-radius: 12px;
+                font-weight: 500;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 12px 20px;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                font-size: 0.95rem;
+                gap: .5rem;
+            }
+
+            .stream-btn:hover {
+                transform: scale(1.03);
+                box-shadow: 0 8px 15px rgba(0,0,0,.25);
+            }
+
+            .adfree-btn {
+                background: linear-gradient(135deg, #09C842 0%, #069C34 100%);
+                color: white;
+                box-shadow: 0 4px 15px rgba(9, 200, 66, 0.25);
+            }
+
+            .skeleton {
+                animation: pulse 2s infinite;
+                border-radius: 12px;
+                background: rgba(255,255,255,0.03);
+                padding: 10px;
+            }
+
+            @keyframes pulse {
+                0%,100% { opacity: 1; }
+                50% { opacity: .5; }
+            }
+
+            .mobile-menu {
+                transform: translateX(-100%);
+                transition: transform .28s ease-in-out;
+            }
+
+            .mobile-menu.active {
+                transform: translateX(0);
+            }
+
+            .team-logo {
+                width: 70px;
+                height: 70px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.1);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                color: white;
+                border: 2px solid rgba(255,255,255,0.2);
+                background-size: cover;
+                background-position: center;
+                backdrop-filter: blur(5px);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+                margin: 0 auto;
+            }
+
+            .match-background {
+                height: 180px;
+                background-size: cover;
+                background-position: top;
+                position: relative;
+                
+            }
+
+            .match-background-overlay {
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(to top, rgba(12, 26, 74, 0.9) 0%, transparent 50%, rgba(12, 26, 74, 0.9) 100%);
+            }
+
+            .score-display {
+                font-size: 1.1rem;
+                font-weight: 600;
+                margin-top: 5px;
+                display: flex;
+                align-items: center;
+                color: #09c341;
+                justify-content: center;
+                background: rgba(0,0,0,0.3);
+                padding: 4px 10px;
+                border-radius: 20px;
+                margin-top: 8px;
+            }
+
+            .tournament-name {
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                font-weight: 600;
+                font-size: 1rem;
+                text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+                max-width: 90%;
+            }
+
+            .telegram-btn {
+                background: #09C842;
+                color: white;
+                border-radius: 50%;
+                width: 42px;
+                height: 42px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all .3s ease;
+                box-shadow: 0 4px 10px rgba(255, 106, 0, 0.3);
+            }
+
+            .telegram-btn:hover {
+                transform: scale(1.08);
+            }
+
+            .date-time {
+                font-size: 0.85rem;
+                color: #cbd5e1;
+                font-weight: 500;
+                margin-top: 8px;
+                background: rgba(0,0,0,0.28);
+                padding: 4px 12px;
+                border-radius: 20px;
+            }
+
+            .button-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .stream-btn {
+                flex: 1;
+                min-width: 120px;
+            }
+
+            .minimal-footer {
+                background: rgba(12, 26, 74, 0.9);
+                color: white;
+                padding: 10px 0;
+                text-align: center;
+                font-size: .9rem;
+                margin-top: auto;
+                backdrop-filter: blur(5px);
+                border-top: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .telegram-link {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                background: linear-gradient(135deg, #09C842 0%, #09C842 100%);
+                color: white;
+                padding: 10px 20px;
+                border-radius: 30px;
+                margin-top: 10px;
+                text-decoration: none;
+                transition: all .3s ease;
+                font-weight: 600;
+                box-shadow: 0 4px 15px rgba(255,106,0,0.18);
+                font-size: 0.95rem;
+            }
+
+            .player-modal {
+                position: fixed;
+                inset: 0;
+                background: rgba(12,18,40,0.95);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 100;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity .2s ease;
+            }
+
+            .player-modal.active {
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .player-container {
+                position: relative;
+                width: 95%;
+                max-width: 900px;
+                background: linear-gradient(135deg, #0F235A 0%, #1A3A8F 100%);
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 15px 50px rgba(0,0,0,.7);
+                min-width: 320px;
+                min-height: 180px;
+                border: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .player-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 14px 18px;
+                background: linear-gradient(90deg, #0F235A 0%, #1A3A8F 100%);
+                color: white;
+                cursor: grab;
+                gap: 10px;
+            }
+
+            .player-header:active {
+                cursor: grabbing;
+            }
+
+            .player-title {
+                font-size: 0.9rem;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .close-player {
+                background: #09C842;
+                border: none;
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                color: white;
+                font-size: 1.1rem;
+                transition: all .3s ease;
+                position: relative;
+                top: 1px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            }
+
+            .close-player:hover {
+                transform: rotate(90deg);
+                background: #e55e00;
+            }
+
+            #videoContainer {
+                width: 100%;
+                background: black;
+                position: relative;
+                max-height: 70vh;
+                overflow: hidden;
+            }
+
+            #videoPlayer {
+                width: 100%;
+                height: 100%;
+                display: block;
+                object-fit: contain;
+                background: black;
+            }
+
+            .resize-handle {
+                position: absolute;
+                right: 8px;
+                top: 8px;
+                width: 20px;
+                height: 20px;
+                border-radius: 3px;
+                cursor: se-resize;
+                z-index: 120;
+            }
+
+            .bg-fallback {
+                background: linear-gradient(180deg, rgba(26, 43, 109, 0.5), rgba(12, 26, 74, 0.8));
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #cbd5e1;
+                font-weight: bold;
+                font-size: 1.5rem;
+                padding: 12px;
+            }
+
+            .card-content {
+                padding: 20px;
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .team-name {
+                font-size: 1rem;
+                font-weight: 600;
+                margin-top: 10px;
+                line-height: 1.2;
+                text-align: center;
+            }
+
+            .vs-text {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: #09C842;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+                line-height: 1;
+            }
+
+            .status-container {
+                position: absolute;
+                bottom: 16px;
+                right: 16px;
+                display: flex;
+                gap: 8px;
+            }
+
+            .loading-spinner {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                border: 3px solid rgba(255,255,255,.3);
+                border-radius: 50%;
+                border-top-color: #fff;
+                animation: spin 1s ease-in-out infinite;
+                margin-right: 8px;
+            }
+            
+            .futuristic-logo {
+    
+    position: relative;
+}
+
+
+
+.futuristic-logo::before {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #3b82f6, #10b981, transparent);
+    border-radius: 2px;
+}
+
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+
+            @media (max-width: 768px) {
+                .matches-grid-title { font-size: 1.6rem; }
+                .team-logo { width: 60px; height: 60px; }
+                .team-name { font-size: 0.9rem; }
+                .vs-text { font-size: 1.3rem; }
+                .date-time { font-size: 0.8rem; }
+                .tournament-name { font-size: 0.95rem; }
+                .status-badge { padding: 5px 12px; font-size: 0.75rem; }
+                .category-badge { width: 32px; height: 32px; font-size: 18px; }
+            }
+
+            @media (max-width: 480px) {
+                .matches-grid-title { font-size: 1.4rem; }
+                .team-logo { width: 50px; height: 50px; }
+                .team-name { font-size: 0.85rem; }
+                .vs-text { font-size: 1.1rem; }
+                .button-container { flex-direction: column; gap: 8px; }
+                .stream-btn { width: 100%; }
+            }
+        </style>
+    </head>
+    <body>
+    <header class="header-gradient text-white site-container flex items-center justify-between sticky top-0 z-40 py-3">
+        <button id="openMenu" class="lg:hidden text-white" aria-label="Open menu">
+            <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+        <a href="https://cinearena.live" class="absolute left-1/2 transform -translate-x-1/2 lg:static lg:transform-none">
+    <span class="text-2xl font-bold tracking-wide tracking-tight futuristic-logo">
+        CineArena<span class="text-green-400">.Live</span>
+    </span>
+</a>
+
+        <nav class="hidden lg:flex gap-6" aria-label="Main navigation">
+            <a href="https://cinearena.live" class="text-gray-300 hover:text-white flex items-center gap-1">
+                <i class="fas fa-home"></i>
+                Home
+            </a>
+            <a href="https://cinearena.live/sports/" class="text-gray-300 hover:text-white flex items-center gap-1">
+                <i class="fas fa-baseball-bat-ball text-orange-400"></i>
+                Sports
+            </a>
+            <a href="https://cinearena.live/fancode/" class="text-gray-300 hover:text-white flex items-center gap-1">
+                <i class="fas fa-tv text-blue-400"></i>
+                Fancode
+            </a>
+            <a href="https://cinearena.live/movies/" class="text-gray-300 hover:text-white flex items-center gap-1">
+                <i class="fas fa-film text-yellow-400"></i>
+                Movies
+            </a>
+            <a href="https://cinearena.live/music/" class="text-gray-300 hover:text-white flex items-center gap-1">
+                <i class="fas fa-music text-purple-400"></i>
+                Music
+            </a>
+        </nav>
+        <div class="flex items-center gap-3">
+            <a href="https://t.me/cine_arena" target="_blank" rel="noopener" class="telegram-btn" aria-label="Telegram channel">
+                <i class="fab fa-telegram text-xl" aria-hidden="true"></i>
+            </a>
+        </div>
+    </header>
+
+
+        <div id="mobileMenu" class="mobile-menu fixed inset-0 z-50 lg:hidden" aria-hidden="true">
+            <div id="overlay" class="absolute inset-0 bg-black/70" onclick="toggleMenu()"></div>
+            <div class="relative w-4/5 max-w-xs h-full bg-[#0c1a4a] shadow-xl" role="dialog" aria-modal="true">
+                <div class="px-4 py-3 flex justify-between items-center header-gradient">
+                    <span class="text-xl font-bold text-white">
+                        CineArena<span class="text-green-400">.Live</span>
+                    </span>
+                    <button onclick="toggleMenu()" class="text-white p-1 rounded-full hover:bg-white/20" aria-label="Close menu">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <nav class="p-4">
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="https://cinearena.live" class="flex items-center px-4 py-3 rounded-lg text-gray-300 hover:bg-blue-500/20 hover:text-white">
+                                <i class="fas fa-home mr-3 text-lg text-blue-400"></i>
+                                Home
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <a href="https://cinearena.live/sports/" class="flex items-center px-4 py-3 rounded-lg text-gray-300 hover:bg-blue-500/20 hover:text-white">
+                                <i class="fas fa-baseball-bat-ball mr-3 text-lg text-orange-400"></i>
+                                Sports
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://cinearena.live/fancode/" class="flex items-center px-4 py-3 rounded-lg text-gray-300 hover:bg-blue-500/20 hover:text-white">
+                                <i class="fas fa-tv mr-3 text-lg text-blue-400"></i>
+                                Fancode
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://cinearena.live/movies/" class="flex items-center px-4 py-3 rounded-lg text-gray-300 hover:bg-blue-500/20 hover:text-white">
+                                <i class="fas fa-film mr-3 text-lg text-yellow-400"></i>
+                                Movies
+                            </a>
+                        </li>
+                        
+                        <li>
+                            <a href="https://cinearena.live/music/" class="flex items-center px-4 py-3 rounded-lg text-gray-300 hover:bg-blue-500/20 hover:text-white">
+                                <i class="fas fa-music mr-3 text-lg text-purple-400"></i>
+                                Music
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://t.me/cine_arena" target="_blank" rel="noopener" class="flex items-center px-4 py-3 rounded-lg text-gray-300 hover:bg-blue-500/20 hover:text-white">
+                                <i class="fab fa-telegram mr-3 text-lg text-blue-300"></i>
+                                Telegram Channel
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <main class="site-container px-4 py-6 mx-auto" id="main">
+            <h2 class="matches-grid-title">Live & Upcoming Matches</h2>
+            
+            <!-- Loading skeleton -->
+            <div id="loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Skeleton cards will be inserted here -->
+            </div>
+            
+            <!-- Matches container -->
+            <div id="matches-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" aria-live="polite">
+                <!-- Match cards will be inserted here -->
+            </div>
+            
+            <!-- Error display -->
+            <div id="error" class="hidden bg-red-900/50 border-l-4 border-red-500 p-4 rounded-lg mb-8" role="alert">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fa-solid fa-circle-exclamation text-red-400 text-xl"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-red-200 font-medium">Error loading matches</p>
+                        <p id="error-message" class="text-red-100 mt-2"></p>
+                        <button id="retryBtn" class="mt-3 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center">
+                            <span class="loading-spinner"></span>
+                            Retry
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+          <!-- 🔻 Online Counter -->
+  <center class="mt-2">
+    <script src="//widget.supercounters.com/ssl/online_t.js"></script>
+    <script>sc_online_t(1707487,"Users Online","170ddb");</script>
+    <noscript><a href="https://www.supercounters.com/">supercounters.com</a></noscript>
+  </center>
+
+        <div class="minimal-footer">
+            <div class="site-container">
+                <a href="https://t.me/cine_arena" target="_blank" rel="noopener" class="telegram-link">
+                    <i class="fab fa-telegram" aria-hidden="true"></i>
+                    Join our Telegram Channel
+                </a>
+            </div>
+        </div>
+
+        <!-- Player Modal -->
+        <div class="player-modal" id="playerModal" role="dialog" aria-modal="true" aria-hidden="true">
+            <div class="player-container" id="playerContainer" role="document" aria-labelledby="playerTitle">
+                <div class="player-header" id="playerHeader">
+                    <div class="player-title" id="playerTitle">
+                        <i class="fas fa-play-circle text-green-500" aria-hidden="true"></i>
+                        <span>Live Match Streaming</span>
+                    </div>
+                    <button class="close-player" id="closePlayer" aria-label="Close player">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div id="videoContainer">
+                    <video id="videoPlayer" playsinline webkit-playsinline crossorigin="anonymous"></video>
+                    <div class="resize-handle" id="resizeHandle" title="Drag to resize"></div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.0/dist/hls.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/plyr@3.7.8/dist/plyr.min.js"></script>
+        <script>
+   function _0x2865(){const _0x152b3a=['sportsApp','retryBtn','innerHTML','hls','short','fullscreen','add','team_1','8sqWSoo','team_2','false','numeric','match','2-digit','closePlayer','\x22\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','video/mp4','<button\x20class=\x22stream-btn\x20adfree-btn\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-crown\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20Ad-Free\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>','setupEventListeners','fetchMatches','videoPlayer','title','current-time','2077251vBDoZK','key','6TcWamB','elements','mobileMenu','Escape','forEach','toggleMenu','getElementById','emojiMap','COMPLETED','application/vnd.apple.mpegurl','showPlayer','currentTarget','toLocaleString','message','setupPlyrPlayer','exitfullscreen','HLS.js\x20not\x20loaded','panels','true','openMenu','match-card','catch','play','init','addEventListener','push','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22card-content\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22tournament-name\x20text-center\x20text-gray-300\x20mb-2\x20font-semibold\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','currentLevel','playerModal','querySelector','textContent','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22h-full\x20bg-gray-700/50\x20rounded-xl\x20overflow-hidden\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22h-48\x20bg-gray-600/50\x20rounded-t-xl\x20mb-4\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22p-4\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22h-4\x20bg-gray-600/50\x20rounded\x20mb-2\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22h-4\x20bg-gray-600/50\x20rounded\x20w-3/4\x20mb-4\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22flex\x20justify-between\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22h-6\x20bg-gray-600/50\x20rounded\x20w-1/3\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22h-6\x20bg-gray-600/50\x20rounded\x20w-1/3\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','loading','12108544sYJUhO','DOMContentLoaded','Time\x20TBD','isSupported','<span\x20class=\x22','No\x20stream\x20URL\x20available\x20for\x20this\x20match.','55953jSfDPr','27684gLcoSx','toggle','target','lock','setAttribute','Stream\x20format\x20not\x20supported\x20by\x20your\x20browser.\x20Try\x20Chrome\x20or\x20Safari.','status-upcoming','active','UPCOMING','warn','171ftjVKX','setupHLSPlayer','split','bg-gray-600\x20text-white','landscape','loadSource','2340390SNFFdc','1168URCoig','createDocumentFragment','renderMatches','height','\x27)\x22','remove','undefined','tryUnlockOrientation','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','184151fWYzlf','en-US','stringify','status-badge\x20','auto','Tournament','handleHlsError','match-card\x20skeleton','json','options','showError','orientation','no-store','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22button-container\x20mt-4\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','MANIFEST_PARSED','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22match-background\x20','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22match-background-overlay\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22category-badge\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','<button\x20class=\x22stream-btn\x20bg-blue-600\x20hover:bg-blue-700\x20text-white\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-play\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20Watch\x20Live\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>','.m3u8','click','5509700KAzlkC','speed','unlock','error','appendChild','setupNativePlayer','Autoplay\x20failed:','matches','focus','startTime','status','isArray','\x20vs\x20','toString','createElement','video','classList','No\x20matches\x20available','toLowerCase','length','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22status-container\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','className','stopPropagation','error-message','</span>','Events','play-large','lastFocusedElement','levels','player','LIVE','createStatusBadge','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22teams-container\x20flex\x20justify-between\x20items-center\x20mb-4\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','adfree_url','.stream-btn:not(.adfree-btn)','canPlayNative','settings','style=\x22background-image:\x20url(\x27','destroy','dai_url','src','dataset','playStream','canPlayType','hidden','bg-fallback','12VtydYq','matches-container','createMatchCard','currentMatch','keydown','<div\x20class=\x22team-section\x20flex-1\x20text-center\x22></div>','<div>No\x20Image</div>','formatDateTime','quality','aria-hidden','Hls','<button\x20class=\x22stream-btn\x20bg-gray-600\x20text-gray-400\x20cursor-not-allowed\x22\x20disabled>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-ban\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20Stream\x20Unavailable\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>','createTeamSection','playerTitle','tryLockOrientation'];_0x2865=function(){return _0x152b3a;};return _0x2865();}function _0x360c(_0x54a075,_0x535021){const _0x286547=_0x2865();return _0x360c=function(_0x360cf6,_0x30b529){_0x360cf6=_0x360cf6-0xc2;let _0x598eaf=_0x286547[_0x360cf6];return _0x598eaf;},_0x360c(_0x54a075,_0x535021);}const _0x4f61bf=_0x360c;(function(_0x5b6377,_0x347803){const _0x1e2529=_0x360c,_0x3527d1=_0x5b6377();while(!![]){try{const _0x3e2aca=-parseInt(_0x1e2529(0x13b))/0x1*(-parseInt(_0x1e2529(0xe8))/0x2)+-parseInt(_0x1e2529(0x12b))/0x3*(-parseInt(_0x1e2529(0x121))/0x4)+parseInt(_0x1e2529(0x14f))/0x5*(-parseInt(_0x1e2529(0xf9))/0x6)+parseInt(_0x1e2529(0x11a))/0x7+parseInt(_0x1e2529(0x132))/0x8*(-parseInt(_0x1e2529(0x120))/0x9)+parseInt(_0x1e2529(0x131))/0xa+-parseInt(_0x1e2529(0xf7))/0xb*(parseInt(_0x1e2529(0xd1))/0xc);if(_0x3e2aca===_0x347803)break;else _0x3527d1['push'](_0x3527d1['shift']());}catch(_0x4bb12e){_0x3527d1['push'](_0x3527d1['shift']());}}}(_0x2865,0xdadd5));class SportsStreamingApp{constructor(){const _0x3293f2=_0x360c;this['currentMatch']=null,this[_0x3293f2(0x16c)]=null,this[_0x3293f2(0xe3)]=null,this['lastFocusedElement']=null,this[_0x3293f2(0x100)]={'cricket':'🏏','motogp':'🏍️','football':'⚽','golf':'⛳','formula\x201':'🏎️','basketball':'🏀','baseball':'⚾'},this[_0x3293f2(0x110)]();}['init'](){const _0x547319=_0x360c;this[_0x547319(0xf2)](),this[_0x547319(0xf3)]();}[_0x4f61bf(0xf2)](){const _0x868e0b=_0x4f61bf;document[_0x868e0b(0xff)](_0x868e0b(0x10c))['addEventListener'](_0x868e0b(0x14e),()=>this[_0x868e0b(0xfe)]()),document[_0x868e0b(0xff)](_0x868e0b(0xee))[_0x868e0b(0x111)](_0x868e0b(0x14e),()=>this[_0x868e0b(0xee)]()),document[_0x868e0b(0xff)]('playerModal')[_0x868e0b(0x111)](_0x868e0b(0x14e),_0x126f21=>{const _0x424aa4=_0x868e0b;if(_0x126f21[_0x424aa4(0x123)]===_0x126f21[_0x424aa4(0x104)])this[_0x424aa4(0xee)]();}),document[_0x868e0b(0x111)](_0x868e0b(0xd5),_0x29af29=>{const _0x1c9856=_0x868e0b;if(_0x29af29[_0x1c9856(0xf8)]===_0x1c9856(0xfc))this['closePlayer']();}),document[_0x868e0b(0xff)](_0x868e0b(0xe1))[_0x868e0b(0x111)](_0x868e0b(0x14e),()=>this[_0x868e0b(0xf3)]());}[_0x4f61bf(0xfe)](){const _0x345200=_0x4f61bf,_0x227a7d=document['getElementById'](_0x345200(0xfb));_0x227a7d[_0x345200(0x15f)][_0x345200(0x122)](_0x345200(0x128));}async['fetchMatches'](){const _0x1d7241=_0x4f61bf,_0x4bbef6=document['getElementById'](_0x1d7241(0x119)),_0x16a5a5=document[_0x1d7241(0xff)](_0x1d7241(0xd2)),_0x37de11=document[_0x1d7241(0xff)](_0x1d7241(0x152));try{_0x4bbef6[_0x1d7241(0x15f)][_0x1d7241(0x137)]('hidden'),_0x37de11[_0x1d7241(0x15f)][_0x1d7241(0xe6)](_0x1d7241(0xcf)),_0x16a5a5[_0x1d7241(0xe2)]='',this['createSkeletonCards']();const _0x1447f3=await fetch('https://raw.githubusercontent.com/drmlive/fancode-live-events/main/fancode.json',{'cache':_0x1d7241(0x147)});if(!_0x1447f3['ok'])throw new Error('HTTP\x20error:\x20'+_0x1447f3[_0x1d7241(0x159)]);const _0x40002e=await _0x1447f3[_0x1d7241(0x143)]();_0x4bbef6[_0x1d7241(0x15f)][_0x1d7241(0xe6)]('hidden');if(_0x40002e&&Array[_0x1d7241(0x15a)](_0x40002e['matches'])&&_0x40002e[_0x1d7241(0x156)]['length'])this[_0x1d7241(0x134)](_0x40002e['matches']);else throw new Error(_0x1d7241(0x160));}catch(_0x5e6c78){console[_0x1d7241(0x152)]('Error\x20fetching\x20matches:',_0x5e6c78),_0x4bbef6[_0x1d7241(0x15f)][_0x1d7241(0xe6)]('hidden'),document['getElementById'](_0x1d7241(0x166))[_0x1d7241(0x117)]=_0x5e6c78[_0x1d7241(0x106)]||'Failed\x20to\x20load\x20matches.\x20Please\x20try\x20again\x20later.',_0x5e6c78[_0x1d7241(0x15f)][_0x1d7241(0x137)](_0x1d7241(0xcf));}}['createSkeletonCards'](){const _0x364e39=_0x4f61bf,_0x4d6f9d=document['getElementById'](_0x364e39(0x119));_0x4d6f9d['innerHTML']='';for(let _0x90e345=0x0;_0x90e345<0x6;_0x90e345++){const _0x31b9c6=document[_0x364e39(0x15d)]('div');_0x31b9c6[_0x364e39(0x164)]=_0x364e39(0x142),_0x31b9c6[_0x364e39(0xe2)]=_0x364e39(0x118),_0x4d6f9d[_0x364e39(0x153)](_0x31b9c6);}}[_0x4f61bf(0x134)](_0x229ae9){const _0x57571c=_0x4f61bf,_0x3973c1=document['getElementById'](_0x57571c(0xd2)),_0x1ed8bd=document[_0x57571c(0xff)](_0x57571c(0x119));_0x1ed8bd[_0x57571c(0x15f)][_0x57571c(0xe6)](_0x57571c(0xcf)),_0x3973c1['innerHTML']='';const _0x41dfb5=document[_0x57571c(0x133)]();_0x229ae9[_0x57571c(0xfd)](_0x5bc518=>{const _0x4e1ade=_0x57571c,_0x54c7cb=this[_0x4e1ade(0xd3)](_0x5bc518);_0x41dfb5['appendChild'](_0x54c7cb);}),_0x3973c1['appendChild'](_0x41dfb5);}[_0x4f61bf(0xd3)](_0x25ee17){const _0x212ed3=_0x4f61bf,_0x400b0b=document[_0x212ed3(0x15d)]('div');_0x400b0b['className']=_0x212ed3(0x10d),_0x400b0b[_0x212ed3(0xcc)][_0x212ed3(0xec)]=encodeURIComponent(JSON[_0x212ed3(0x13d)](_0x25ee17));const _0x35aa53=this[_0x212ed3(0x100)][_0x25ee17['event_category']?.[_0x212ed3(0x161)]()]||'🎮',_0x215ac1=_0x25ee17[_0x212ed3(0xca)]||_0x25ee17[_0x212ed3(0xc4)];_0x400b0b[_0x212ed3(0xe2)]=_0x212ed3(0x14a)+(!_0x25ee17[_0x212ed3(0xcb)]?_0x212ed3(0xd0):'')+_0x212ed3(0xef)+(_0x25ee17[_0x212ed3(0xcb)]?_0x212ed3(0xc8)+_0x25ee17['src']+_0x212ed3(0x136):'')+'>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+(!_0x25ee17[_0x212ed3(0xcb)]?_0x212ed3(0xd7):'')+_0x212ed3(0x14b)+_0x35aa53+_0x212ed3(0x163)+this['createStatusBadge'](_0x25ee17)+_0x212ed3(0x113)+(_0x25ee17['event_name']||_0x212ed3(0x140))+_0x212ed3(0xc3)+this[_0x212ed3(0xdd)](_0x25ee17[_0x212ed3(0xe7)])+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22vs-section\x20text-center\x20mx-4\x20flex\x20flex-col\x20items-center\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22vs-text\x22>VS</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22date-time\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+this[_0x212ed3(0xd8)](_0x25ee17[_0x212ed3(0x158)])+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+this[_0x212ed3(0xdd)](_0x25ee17[_0x212ed3(0xe9)])+_0x212ed3(0x148)+(_0x215ac1?_0x212ed3(0x14c):_0x212ed3(0xdc))+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+(_0x25ee17['adfree_url']?_0x212ed3(0xf1):'')+_0x212ed3(0x13a);if(_0x215ac1){const _0x9eac39=_0x400b0b[_0x212ed3(0x116)](_0x212ed3(0xc5));_0x9eac39[_0x212ed3(0x111)](_0x212ed3(0x14e),_0x4c64e3=>{const _0x280e05=_0x212ed3;_0x4c64e3['stopPropagation'](),this[_0x280e05(0x103)](_0x25ee17,_0x25ee17['dai_url']);});if(_0x25ee17[_0x212ed3(0xc4)]){const _0x589320=_0x400b0b['querySelector']('.adfree-btn');_0x589320[_0x212ed3(0x111)](_0x212ed3(0x14e),_0x1dee97=>{const _0x36ea09=_0x212ed3;_0x1dee97[_0x36ea09(0x165)](),this[_0x36ea09(0x103)](_0x25ee17,_0x25ee17[_0x36ea09(0xc4)]);});}}return _0x400b0b;}['createTeamSection'](_0x8c685a){const _0x576207=_0x4f61bf;if(!_0x8c685a)return _0x576207(0xd6);const _0x3d9833=_0x8c685a[_0x576207(0x12d)]('\x20')['map'](_0x4e547e=>_0x4e547e[0x0])['join']('')['toUpperCase']();return'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22team-section\x20flex-1\x20text-center\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22team-logo\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+_0x3d9833+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22team-name\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+_0x8c685a+_0x576207(0x13a);}[_0x4f61bf(0xc2)](_0xd784b2){const _0x29c1f3=_0x4f61bf,_0x37625c=_0xd784b2['status'];let _0x1aab33=_0x29c1f3(0x13e),_0x771bce='';switch(_0x37625c){case _0x29c1f3(0x16d):_0x1aab33+='status-live',_0x771bce=_0x29c1f3(0x16d);break;case _0x29c1f3(0x129):_0x1aab33+=_0x29c1f3(0x127),_0x771bce=_0x29c1f3(0x129);break;case _0x29c1f3(0x101):_0x1aab33+='status-completed',_0x771bce='COMPLETED';break;default:_0x1aab33+=_0x29c1f3(0x12e),_0x771bce=_0x37625c||_0x29c1f3(0x129);}return _0x29c1f3(0x11e)+_0x1aab33+'\x22>'+_0x771bce+_0x29c1f3(0x167);}[_0x4f61bf(0x103)](_0x43f7f2,_0x552f64){const _0x431997=_0x4f61bf;this[_0x431997(0xd4)]=_0x43f7f2,this['lastFocusedElement']=document['activeElement'];const _0x4da338=document[_0x431997(0xff)](_0x431997(0x115)),_0x4098a1=document[_0x431997(0xff)](_0x431997(0xde))[_0x431997(0x116)]('span');_0x4098a1[_0x431997(0x117)]=_0x43f7f2[_0x431997(0xf5)]||_0x43f7f2[_0x431997(0xe7)]+_0x431997(0x15b)+_0x43f7f2[_0x431997(0xe9)],_0x4da338[_0x431997(0x15f)]['add'](_0x431997(0x128)),_0x4da338[_0x431997(0x125)](_0x431997(0xda),_0x431997(0xea)),this[_0x431997(0xcd)](_0x552f64);}async[_0x4f61bf(0xcd)](_0x6250ab){const _0x839410=_0x4f61bf,_0x505ad6=document[_0x839410(0xff)](_0x839410(0xf4));if(!_0x6250ab){this[_0x839410(0x145)](_0x839410(0x11f));return;}this['player']&&(this['player'][_0x839410(0xc9)](),this[_0x839410(0x16c)]=null);this[_0x839410(0xe3)]&&(this[_0x839410(0xe3)][_0x839410(0xc9)](),this[_0x839410(0xe3)]=null);if(_0x6250ab['includes'](_0x839410(0x14d))&&this['canPlayHLS']())await this[_0x839410(0x12c)](_0x505ad6,_0x6250ab);else{if(this['canPlayNative'](_0x6250ab))await this[_0x839410(0x154)](_0x505ad6,_0x6250ab);else{this[_0x839410(0x145)](_0x839410(0x126));return;}}this['tryLockOrientation'](_0x839410(0x12f));}async[_0x4f61bf(0x12c)](_0x570ad0,_0x5574bb){const _0x1b55e9=_0x4f61bf;if(typeof Hls===_0x1b55e9(0x138))throw new Error(_0x1b55e9(0x109));Hls['isSupported']()&&(this[_0x1b55e9(0xe3)]=new Hls({'maxMaxBufferLength':0x258,'xhrSetup':_0x6d8180=>{_0x6d8180['withCredentials']=![];}}),this[_0x1b55e9(0xe3)][_0x1b55e9(0x130)](_0x5574bb),this[_0x1b55e9(0xe3)]['attachMedia'](_0x570ad0),this[_0x1b55e9(0xe3)]['on'](Hls[_0x1b55e9(0x168)][_0x1b55e9(0x149)],()=>{const _0x5c2d6e=_0x1b55e9;this[_0x5c2d6e(0x107)](_0x570ad0,!![]);}),this[_0x1b55e9(0xe3)]['on'](Hls[_0x1b55e9(0x168)]['ERROR'],(_0x1076b9,_0x5ed7dd)=>{const _0x1e61d2=_0x1b55e9;console[_0x1e61d2(0x152)]('HLS\x20error:',_0x5ed7dd),this[_0x1e61d2(0x141)](_0x5ed7dd,_0x5574bb);}));}async[_0x4f61bf(0x154)](_0x453805,_0x5f48d7){const _0x419668=_0x4f61bf;_0x453805[_0x419668(0xcb)]=_0x5f48d7,this[_0x419668(0x107)](_0x453805,![]),_0x453805[_0x419668(0x10f)]()[_0x419668(0x10e)](_0x4563cb=>{const _0x527ad3=_0x419668;console[_0x527ad3(0x152)](_0x527ad3(0x155),_0x4563cb);});}[_0x4f61bf(0x107)](_0x4a0be3,_0x511aec){const _0x4af3b8=_0x4f61bf,_0x46424b={'controls':[_0x4af3b8(0x169),'play','progress',_0x4af3b8(0xf6),'mute','volume','settings',_0x4af3b8(0xe5)],'autoplay':!![],'settings':['quality',_0x4af3b8(0x150)]};if(_0x511aec&&this['hls']){const _0x4b8fdf=this[_0x4af3b8(0xe3)][_0x4af3b8(0x16b)];if(_0x4b8fdf&&_0x4b8fdf[_0x4af3b8(0x162)]>0x0){const _0x3250d8={'default':0x0,'options':[_0x4af3b8(0x13f)],'forced':!![],'onChange':_0xd5c985=>{const _0xac7937=_0x4af3b8;_0xd5c985===_0xac7937(0x13f)?this['hls'][_0xac7937(0x114)]=-0x1:this[_0xac7937(0xe3)][_0xac7937(0x114)]=parseInt(_0xd5c985);}};_0x4b8fdf[_0x4af3b8(0xfd)]((_0x9a946f,_0x33c4a9)=>{const _0x2395a5=_0x4af3b8;_0x9a946f[_0x2395a5(0x135)]&&_0x3250d8[_0x2395a5(0x144)][_0x2395a5(0x112)](_0x33c4a9[_0x2395a5(0x15c)]());}),_0x46424b[_0x4af3b8(0xd9)]=_0x3250d8;}}this['player']=new Plyr(_0x4a0be3,_0x46424b),_0x511aec&&this['hls']&&this['player']['on']('ready',()=>{const _0x26e02b=_0x4af3b8,_0xc77fc8=this['hls'][_0x26e02b(0x16b)];_0xc77fc8&&_0xc77fc8[_0x26e02b(0x162)]>0x0&&_0xc77fc8[_0x26e02b(0xfd)]((_0x17ae90,_0xc6defe)=>{const _0x5941c2=_0x26e02b;if(_0x17ae90['height']){const _0x25c792=this[_0x5941c2(0x16c)][_0x5941c2(0xfa)][_0x5941c2(0xc7)][_0x5941c2(0x10a)][_0x5941c2(0xd9)][_0x5941c2(0x116)]('[value=\x22'+_0xc6defe+'\x22]');_0x25c792&&(_0x25c792[_0x5941c2(0x117)]=_0x17ae90['height']+'p');}});}),this[_0x4af3b8(0x16c)]['on']('enterfullscreen',()=>this[_0x4af3b8(0xdf)](_0x4af3b8(0x12f))),this[_0x4af3b8(0x16c)]['on'](_0x4af3b8(0x108),()=>this[_0x4af3b8(0x139)]());}[_0x4f61bf(0xee)](){const _0x2784f6=_0x4f61bf,_0x344332=document[_0x2784f6(0xff)](_0x2784f6(0x115));_0x344332['classList'][_0x2784f6(0x137)](_0x2784f6(0x128)),_0x344332[_0x2784f6(0x125)](_0x2784f6(0xda),_0x2784f6(0x10b)),this[_0x2784f6(0x16c)]&&(this[_0x2784f6(0x16c)][_0x2784f6(0xc9)](),this[_0x2784f6(0x16c)]=null),this[_0x2784f6(0xe3)]&&(this['hls'][_0x2784f6(0xc9)](),this[_0x2784f6(0xe3)]=null),this[_0x2784f6(0x139)](),this[_0x2784f6(0x16a)]&&this[_0x2784f6(0x16a)][_0x2784f6(0x157)]();}['canPlayHLS'](){const _0x33dd68=_0x4f61bf;return window[_0x33dd68(0xdb)]&&Hls[_0x33dd68(0x11d)]();}[_0x4f61bf(0xc6)](_0x29217e){const _0x5df673=_0x4f61bf,_0x59943d=document[_0x5df673(0x15d)](_0x5df673(0x15e));return _0x59943d[_0x5df673(0xce)](_0x5df673(0x102))||_0x59943d['canPlayType'](_0x5df673(0xf0));}['tryLockOrientation'](_0x329e3a){const _0x4b9840=_0x4f61bf;try{screen[_0x4b9840(0x146)]&&screen[_0x4b9840(0x146)][_0x4b9840(0x124)]&&screen[_0x4b9840(0x146)][_0x4b9840(0x124)](_0x329e3a)[_0x4b9840(0x10e)](console[_0x4b9840(0x12a)]);}catch(_0x3e1317){console[_0x4b9840(0x12a)]('Orientation\x20lock\x20failed:',_0x3e1317);}}['tryUnlockOrientation'](){const _0x111e13=_0x4f61bf;try{screen[_0x111e13(0x146)]&&screen[_0x111e13(0x146)][_0x111e13(0x151)]&&screen[_0x111e13(0x146)]['unlock']();}catch(_0x20e002){}}[_0x4f61bf(0xd8)](_0x3d8996){const _0x5d7d83=_0x4f61bf;if(!_0x3d8996)return _0x5d7d83(0x11c);try{const [_0x55b7dc,_0x5ee50e,_0x1dcd8f]=_0x3d8996[_0x5d7d83(0x12d)]('\x20'),[_0x4289c7,_0x403755,_0x56a721]=_0x1dcd8f[_0x5d7d83(0x12d)]('-'),_0x595758=new Date(_0x56a721+'-'+_0x403755+'-'+_0x4289c7+'\x20'+_0x55b7dc+'\x20'+_0x5ee50e);return _0x595758[_0x5d7d83(0x105)](_0x5d7d83(0x13c),{'weekday':_0x5d7d83(0xe4),'month':_0x5d7d83(0xe4),'day':_0x5d7d83(0xeb),'hour':'numeric','minute':_0x5d7d83(0xed),'hour12':!![]});}catch(_0x2537c7){return _0x3d8996;}}[_0x4f61bf(0x145)](_0x135ec6){alert(_0x135ec6);}}document[_0x4f61bf(0x111)](_0x4f61bf(0x11b),()=>{const _0x1ae1a9=_0x4f61bf;window[_0x1ae1a9(0xe0)]=new SportsStreamingApp();});function toggleMenu(){const _0x262a60=_0x4f61bf,_0x541a85=document[_0x262a60(0xff)](_0x262a60(0xfb));_0x541a85['classList'][_0x262a60(0x122)](_0x262a60(0x128));}
+</script>
+        
+ <!-- Disable Dev -->
+    <script>
+        function _0xd920(_0x43ab84,_0x28c1d5){_0x43ab84=_0x43ab84-0xea;const _0x107b17=_0x107b();let _0xd920ba=_0x107b17[_0x43ab84];return _0xd920ba;}(function(_0x285508,_0x15ed05){const _0x4b9c78=_0xd920,_0x62ef79=_0x285508();while(!![]){try{const _0x483870=-parseInt(_0x4b9c78(0x113))/0x1+parseInt(_0x4b9c78(0x14a))/0x2+-parseInt(_0x4b9c78(0x11a))/0x3+parseInt(_0x4b9c78(0x123))/0x4+-parseInt(_0x4b9c78(0x110))/0x5*(parseInt(_0x4b9c78(0x108))/0x6)+parseInt(_0x4b9c78(0xf1))/0x7+parseInt(_0x4b9c78(0x157))/0x8*(parseInt(_0x4b9c78(0xfb))/0x9);if(_0x483870===_0x15ed05)break;else _0x62ef79['push'](_0x62ef79['shift']());}catch(_0x5091df){_0x62ef79['push'](_0x62ef79['shift']());}}}(_0x107b,0xd3eed),(function(){'use strict';const _0x371cbc=_0xd920;const _0x4afab2={'detectionInterval':0x3e8,'maxViolations':0x3,'redirectUrl':_0x371cbc(0xec),'enableLogging':![],'antiDebug':!![],'antiTamper':!![],'blockDevTools':!![]};let _0x13f7fc=0x0,_0x2cb5a4=!![],_0x21c9d2=0x0;const _0x79fca2=new WeakSet(),_0x4bb267={'debuggerLoop':function(){const _0xed2966=_0x371cbc;if(!_0x4afab2[_0xed2966(0x155)])return;const _0x27a41c=Date[_0xed2966(0x14e)](),_0x2a4811=function(){},_0x917809=setInterval(()=>{const _0x233791=_0xed2966;if(Date[_0x233791(0x14e)]()-_0x27a41c>0xc8){clearInterval(_0x917809);return;}_0x2a4811();debugger;},0x64);},'performanceCheck':function(){const _0x3363c0=_0x371cbc,_0x3fcb1f=0x64,_0x5d8ea6=performance['now']();debugger;const _0x3636dc=performance['now']();_0x3636dc-_0x5d8ea6>_0x3fcb1f&&this[_0x3363c0(0xf0)](_0x3363c0(0x146));},'redefineConsole':function(){const _0x32f2cf=_0x371cbc;if(!console)return;const _0x40ac82=[_0x32f2cf(0xff),'info',_0x32f2cf(0xed),_0x32f2cf(0x125),_0x32f2cf(0xfa),_0x32f2cf(0x148),'dir'];_0x40ac82[_0x32f2cf(0x10b)](_0x4f9fea=>{const _0xda92aa=console[_0x4f9fea];_0xda92aa&&(console[_0x4f9fea]=function(..._0x198451){const _0x35950a=_0xd920;_0x4afab2[_0x35950a(0x13b)]&&_0xda92aa[_0x35950a(0xee)](console,[_0x35950a(0x159),..._0x198451]);});});},'obfuscateCode':function(){const _0x33f340=_0x371cbc;document[_0x33f340(0x158)](_0x33f340(0x164),function(){const _0x21fcd9=_0x33f340,_0x29f4fc=document[_0x21fcd9(0x120)]('script');for(let _0x31f5f7 of _0x29f4fc){(_0x31f5f7['textContent'][_0x21fcd9(0x12e)]('debugger')||_0x31f5f7[_0x21fcd9(0x15e)][_0x21fcd9(0x12e)]('console.log'))&&(_0x31f5f7[_0x21fcd9(0x15e)]=_0x31f5f7[_0x21fcd9(0x15e)][_0x21fcd9(0x114)](/\/\/.*$/gm,'')['replace'](/\/\*[\s\S]*?\*\//g,'')[_0x21fcd9(0x114)](/\s+/g,'\x20')[_0x21fcd9(0x137)]());}});}},_0x1e7f1a={'dimensionCheck':function(){const _0xe936aa=_0x371cbc,_0x1d7073=0xa0,_0x405779=0x64,_0x4909eb=window[_0xe936aa(0x101)]-window[_0xe936aa(0xef)],_0x928274=window[_0xe936aa(0x118)]-window[_0xe936aa(0xf9)];return _0x4909eb>_0x1d7073||_0x928274>_0x405779;},'consoleOverrideCheck':function(){const _0x5d2040=_0x371cbc,_0x2ccd62=document[_0x5d2040(0x116)](_0x5d2040(0x106));Object['defineProperty'](_0x2ccd62,'id',{'get':function(){const _0x1b83c6=_0x5d2040;return _0x1e7f1a[_0x1b83c6(0x111)](_0x1b83c6(0x115)),'';}});try{console['log'](_0x2ccd62);}catch(_0x190b10){return!![];}return![];},'debuggerToStringCheck':function(){const _0x49f8d4=_0x371cbc,_0x595cd0=function(){debugger;};return _0x595cd0[_0x49f8d4(0x11d)]()[_0x49f8d4(0x10f)](_0x49f8d4(0x144))!==-0x1;},'errorStackCheck':function(){const _0x5c7680=_0x371cbc;try{throw new Error();}catch(_0xd8f4ea){return _0xd8f4ea[_0x5c7680(0x15a)][_0x5c7680(0x12e)]('at\x20eval')||_0xd8f4ea['stack']['includes'](_0x5c7680(0xf6))||_0xd8f4ea[_0x5c7680(0x15a)][_0x5c7680(0x12e)]('moz-extension://');}},'memoryCheck':function(){const _0x468a12=_0x371cbc;if(performance&&performance['memory']){const _0x551587=performance[_0x468a12(0x119)];return _0x551587[_0x468a12(0x13e)]>_0x551587[_0x468a12(0x133)]*0.8;}return![];},'handleDetection':function(_0x6540f3){const _0x205f3a=_0x371cbc;_0x4afab2[_0x205f3a(0x13b)]&&console[_0x205f3a(0xed)](_0x205f3a(0x14b)+_0x6540f3),_0x1e7f1a['triggerProtection']();}},_0x247d60={'blockShortcuts':function(){const _0x255533=_0x371cbc;document[_0x255533(0x158)](_0x255533(0x162),function(_0x27f8f4){const _0x53bc67=_0x255533;if(_0x27f8f4[_0x53bc67(0x131)]==='F12')return _0x27f8f4[_0x53bc67(0x150)](),_0x27f8f4[_0x53bc67(0x10e)](),this[_0x53bc67(0xf0)]('f12_pressed'),![];if(_0x27f8f4[_0x53bc67(0x129)]&&_0x27f8f4[_0x53bc67(0xf5)]){if(['I','J','C'][_0x53bc67(0x12e)](_0x27f8f4['key'][_0x53bc67(0x149)]()))return _0x27f8f4[_0x53bc67(0x150)](),_0x27f8f4[_0x53bc67(0x10e)](),this[_0x53bc67(0xf0)](_0x53bc67(0x10d)),![];}if(_0x27f8f4[_0x53bc67(0x129)]&&_0x27f8f4[_0x53bc67(0x131)]==='u')return _0x27f8f4[_0x53bc67(0x150)](),_0x27f8f4['stopPropagation'](),this[_0x53bc67(0xf0)](_0x53bc67(0x117)),![];if(_0x27f8f4[_0x53bc67(0x129)]&&_0x27f8f4[_0x53bc67(0x131)]==='s')return _0x27f8f4['preventDefault'](),_0x27f8f4[_0x53bc67(0x10e)](),![];if(_0x27f8f4[_0x53bc67(0x13d)]&&_0x27f8f4['key']==='Menu')return _0x27f8f4[_0x53bc67(0x150)](),_0x27f8f4[_0x53bc67(0x10e)](),![];}['bind'](this));},'blockContextMenu':function(){const _0x5f5477=_0x371cbc;document['addEventListener'](_0x5f5477(0x138),function(_0x43a79f){const _0x19e11d=_0x5f5477;return _0x43a79f['preventDefault'](),_0x43a79f[_0x19e11d(0x10e)](),this[_0x19e11d(0xf0)](_0x19e11d(0x15b)),![];}[_0x5f5477(0xfe)](this)),document[_0x5f5477(0x158)]('touchstart',function(_0xc8cd25){_0xc8cd25['touches']['length']>0x1&&this['handleViolation']('multi_touch');}[_0x5f5477(0xfe)](this),{'passive':![]});},'preventCopyPaste':function(){const _0x59b804=_0x371cbc;document[_0x59b804(0x158)](_0x59b804(0x136),function(_0x2bb102){const _0x48a242=_0x59b804;return _0x2bb102[_0x48a242(0x150)](),![];}),document[_0x59b804(0x158)](_0x59b804(0x15c),function(_0x517e23){const _0x43d6db=_0x59b804;return _0x517e23[_0x43d6db(0x150)](),this['handleViolation'](_0x43d6db(0x14f)),![];}[_0x59b804(0xfe)](this)),document['addEventListener'](_0x59b804(0x135),function(_0x4605d8){const _0x511071=_0x59b804;return _0x4605d8[_0x511071(0x150)](),this[_0x511071(0xf0)]('cut_attempt'),![];}['bind'](this)),document['addEventListener'](_0x59b804(0x122),function(_0x4856cf){const _0x3c8874=_0x59b804;return _0x4856cf[_0x3c8874(0x150)](),this[_0x3c8874(0xf0)](_0x3c8874(0x112)),![];}[_0x59b804(0xfe)](this));},'preventDragDrop':function(){const _0x163078=_0x371cbc;document[_0x163078(0x158)](_0x163078(0x13a),function(_0x208c7e){const _0x1e138f=_0x163078;if(_0x208c7e[_0x1e138f(0x11e)][_0x1e138f(0x156)]!==_0x1e138f(0xf7)&&_0x208c7e['target'][_0x1e138f(0x156)]!==_0x1e138f(0x128))return _0x208c7e[_0x1e138f(0x150)](),![];}),document[_0x163078(0x158)](_0x163078(0x126),function(_0x44cfd1){const _0x397219=_0x163078;return _0x44cfd1[_0x397219(0x150)](),![];});},'monitorDOM':function(){const _0xc04322=_0x371cbc;if(!_0x4afab2['antiTamper'])return;const _0x37cccc=new MutationObserver(function(_0x1d96e0){_0x1d96e0['forEach'](function(_0x4737a0){const _0x14513e=_0xd920;_0x4737a0['type']==='attributes'&&_0x4737a0[_0x14513e(0x12c)]==='id'&&_0x4737a0[_0x14513e(0x11e)]['id']===_0x14513e(0x12f)&&handleViolation(_0x14513e(0x139));});});_0x37cccc[_0xc04322(0x10c)](document[_0xc04322(0x12a)],{'attributes':!![],'childList':!![],'subtree':!![],'attributeFilter':['id',_0xc04322(0x103),_0xc04322(0x140)]});}},_0x55b2a2={'handleViolation':function(_0x2b1a13){const _0x64841b=_0x371cbc,_0xd2e7e3=Date[_0x64841b(0x14e)]();if(_0xd2e7e3-_0x21c9d2<0x1f4)return;_0x21c9d2=_0xd2e7e3,_0x13f7fc++;_0x4afab2[_0x64841b(0x13b)]&&console['error']('Security\x20violation\x20['+_0x2b1a13+_0x64841b(0x102)+_0x13f7fc+'/'+_0x4afab2[_0x64841b(0x130)]);switch(_0x13f7fc){case 0x1:this[_0x64841b(0x11b)](_0x2b1a13);break;case 0x2:this[_0x64841b(0x152)](_0x2b1a13);break;case 0x3:this[_0x64841b(0x105)](_0x2b1a13);break;default:this[_0x64841b(0x13c)](_0x2b1a13);}},'warning':function(_0xa96106){const _0xf50975=_0x371cbc,_0x2c2c50=document[_0xf50975(0x116)](_0xf50975(0x106));_0x2c2c50[_0xf50975(0x140)]['cssText']='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20position:\x20fixed;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20top:\x2010px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20right:\x2010px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20background:\x20#ff4444;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20color:\x20white;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20padding:\x2010px\x2020px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20border-radius:\x205px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20z-index:\x20999999;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20font-family:\x20Arial,\x20sans-serif;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20box-shadow:\x200\x202px\x2010px\x20rgba(0,0,0,0.3);\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',_0x2c2c50['textContent']=_0xf50975(0x163),document[_0xf50975(0x147)][_0xf50975(0x12d)](_0x2c2c50),setTimeout(()=>{_0x2c2c50['parentNode']&&_0x2c2c50['parentNode']['removeChild'](_0x2c2c50);},0xbb8);},'blockInteraction':function(_0x52ea07){const _0xa8dbc6=_0x371cbc;document[_0xa8dbc6(0x147)][_0xa8dbc6(0x140)]['pointerEvents']=_0xa8dbc6(0xea),document[_0xa8dbc6(0x147)][_0xa8dbc6(0x140)][_0xa8dbc6(0x143)]='0.5',setTimeout(()=>{const _0x4202b0=_0xa8dbc6;document[_0x4202b0(0x147)]['style'][_0x4202b0(0x145)]='',document[_0x4202b0(0x147)]['style'][_0x4202b0(0x143)]='';},0x7d0),document[_0xa8dbc6(0x147)][_0xa8dbc6(0x140)][_0xa8dbc6(0x141)]=_0xa8dbc6(0x153),setTimeout(()=>{const _0x5b19ae=_0xa8dbc6;document[_0x5b19ae(0x147)][_0x5b19ae(0x140)][_0x5b19ae(0x141)]='';},0x1f4);if(!document['querySelector'](_0xa8dbc6(0x151))){const _0x38d953=document[_0xa8dbc6(0x116)](_0xa8dbc6(0x140));_0x38d953['id']=_0xa8dbc6(0xfd),_0x38d953[_0xa8dbc6(0x15e)]=_0xa8dbc6(0x160),document['head'][_0xa8dbc6(0x12d)](_0x38d953);}},'redirectOrClose':function(_0x932dfd){const _0x496e91=_0x371cbc;try{window[_0x496e91(0x13f)]['href']=_0x4afab2[_0x496e91(0x15f)],setTimeout(()=>{const _0x5378c6=_0x496e91;window[_0x5378c6(0x13f)][_0x5378c6(0x100)]!==_0x4afab2[_0x5378c6(0x15f)]&&this[_0x5378c6(0x13c)](_0x932dfd);},0x3e8);}catch(_0x4d9157){this['nuclearOption'](_0x932dfd);}},'nuclearOption':function(_0x316456){const _0x4ef171=_0x371cbc;document[_0x4ef171(0x147)]['innerHTML']=_0x4ef171(0xf2),document[_0x4ef171(0x147)][_0x4ef171(0x140)][_0x4ef171(0xfc)]=_0x4ef171(0x11f);const _0x3f516e=setTimeout(()=>{},0x0);for(let _0x26908f=0x0;_0x26908f<_0x3f516e;_0x26908f++){clearTimeout(_0x26908f),clearInterval(_0x26908f);}const _0x1a516a=EventTarget[_0x4ef171(0x134)][_0x4ef171(0x158)];EventTarget['prototype'][_0x4ef171(0x158)]=function(){},window[_0x4ef171(0x132)]=null,window[_0x4ef171(0x14c)]=null,_0x2cb5a4=![];},'triggerProtection':function(){const _0x30867b=_0x371cbc;if(!_0x4afab2[_0x30867b(0x142)])return;setInterval(function(){debugger;},0x64),setTimeout(function(){const _0x36c9f3=_0x30867b,_0x410cc3=[];for(let _0x470a75=0x0;_0x470a75<0xf4240;_0x470a75++){_0x410cc3['push'](new Array(0x3e8)[_0x36c9f3(0x14d)]('x'));}},0x1388);let _0x253ca7=0x0;const _0x240230=setInterval(function(){const _0x542f5c=_0x30867b;_0x253ca7++<0x5?window[_0x542f5c(0x13f)][_0x542f5c(0x10a)]=_0x542f5c(0x12b)+Date[_0x542f5c(0x14e)]():clearInterval(_0x240230);},0x64);}};function _0x2fe2cd(){const _0x35fae7=_0x371cbc,_0x275012=_0x55b2a2[_0x35fae7(0xf0)][_0x35fae7(0xfe)](_0x55b2a2);_0x247d60[_0x35fae7(0xf8)][_0x35fae7(0xeb)]({'handleViolation':_0x275012}),_0x247d60[_0x35fae7(0x107)]['call']({'handleViolation':_0x275012}),_0x247d60[_0x35fae7(0x124)][_0x35fae7(0xeb)]({'handleViolation':_0x275012}),_0x247d60['preventDragDrop']['call']({'handleViolation':_0x275012}),_0x247d60[_0x35fae7(0x154)][_0x35fae7(0xeb)]({'handleViolation':_0x275012});_0x4afab2['antiDebug']&&(_0x4bb267[_0x35fae7(0x15d)](),_0x4bb267['obfuscateCode'](),setInterval(()=>{const _0x1ddd66=_0x35fae7;try{_0x4bb267[_0x1ddd66(0xf4)][_0x1ddd66(0xeb)]({'handleViolation':_0x275012});}catch(_0x9a681f){}},_0x4afab2[_0x35fae7(0x109)]));_0x4afab2['blockDevTools']&&setInterval(()=>{const _0x45892a=_0x35fae7;(_0x1e7f1a[_0x45892a(0x11c)]()||_0x1e7f1a[_0x45892a(0x104)]()||_0x1e7f1a[_0x45892a(0xf3)]()||_0x1e7f1a[_0x45892a(0x121)]())&&_0x1e7f1a['handleDetection'](_0x45892a(0x127));},_0x4afab2['detectionInterval']);_0x4afab2['antiDebug']&&setTimeout(()=>{try{debugger;}catch(_0x1715ca){}},0x7d0);const _0x569d2f=EventTarget[_0x35fae7(0x134)]['removeEventListener'];EventTarget[_0x35fae7(0x134)]['removeEventListener']=function(_0x31f894,_0x4ed611,_0x5cc429){const _0x4c575d=_0x35fae7;if(_0x31f894===_0x4c575d(0x162)||_0x31f894==='contextmenu'){_0x4afab2[_0x4c575d(0x13b)]&&console[_0x4c575d(0xed)]('Attempt\x20to\x20remove\x20security\x20event\x20listener\x20blocked');return;}_0x569d2f[_0x4c575d(0xeb)](this,_0x31f894,_0x4ed611,_0x5cc429);};}document[_0x371cbc(0x161)]==='loading'?document[_0x371cbc(0x158)](_0x371cbc(0x164),_0x2fe2cd):_0x2fe2cd(),window['pageProtection']={'disable':function(){_0x2cb5a4=![],_0x13f7fc=0x0;},'enable':function(){_0x2cb5a4=!![];},'status':function(){return{'protected':_0x2cb5a4,'violations':_0x13f7fc,'config':_0x4afab2};}};}()));function _0x107b(){const _0x19e7e=[']:\x20','class','consoleOverrideCheck','redirectOrClose','div','blockContextMenu','3999264uMWeeI','detectionInterval','hash','forEach','observe','devtools_shortcut','stopPropagation','indexOf','10RzILkU','handleDetection','paste_attempt','1019935QlUVNI','replace','getter_trap','createElement','view_source','outerHeight','memory','3250062gCWShJ','warning','dimensionCheck','toString','target','hidden','getElementsByTagName','memoryCheck','paste','3563496SNLRQn','preventCopyPaste','error','drop','combined_check','TEXTAREA','ctrlKey','documentElement','devtools_blocked_','attributeName','appendChild','includes','chrome-dev-tools','maxViolations','key','onbeforeunload','jsHeapSizeLimit','prototype','cut','selectstart','trim','contextmenu','dom_tampering','dragstart','enableLogging','nuclearOption','altKey','usedJSHeapSize','location','style','animation','blockDevTools','opacity','debugger','pointerEvents','performance_debugging_detected','body','table','toUpperCase','1936248CJEGCK','DevTools\x20detection\x20via:\x20','onunload','join','now','copy_attempt','preventDefault','#shake-style','blockInteraction','shake\x200.5s','monitorDOM','antiDebug','tagName','15458056yxROlb','addEventListener','[Protected]','stack','context_menu','copy','redefineConsole','textContent','redirectUrl','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20@keyframes\x20shake\x20{\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x200%,\x20100%\x20{transform:\x20translateX(0);}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2010%,\x2030%,\x2050%,\x2070%,\x2090%\x20{transform:\x20translateX(-5px);}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2020%,\x2040%,\x2060%,\x2080%\x20{transform:\x20translateX(5px);}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','readyState','keydown','⚠️\x20Inspection\x20tools\x20are\x20disabled','DOMContentLoaded','none','call','about:blank','warn','apply','innerWidth','handleViolation','3592393ioXSnw','<div\x20style=\x22position:fixed;top:0;left:0;width:100%;height:100%;background:black;color:white;display:flex;align-items:center;justify-content:center;font-size:24px;z-index:9999999;\x22>Access\x20Restricted</div>','errorStackCheck','performanceCheck','shiftKey','chrome-extension://','INPUT','blockShortcuts','innerHeight','debug','9NygKOy','overflow','shake-style','bind','log','href','outerWidth'];_0x107b=function(){return _0x19e7e;};return _0x107b();}
+    </script>
+        
+    </body>
+</html>
