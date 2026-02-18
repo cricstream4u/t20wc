@@ -764,10 +764,10 @@
   </div>
 
   <script>
-    // Optional Telegram redirect
-    if (confirm("Join Our Telegram Channel @CineArena To Watch Live Matches")) {
-      window.location.href = "https://t.me/cine_arena";
-    }
+    // Optional Telegram redirect - commented out to prevent interruption
+    // if (confirm("Join Our Telegram Channel @CineArena To Watch Live Matches")) {
+    //   window.location.href = "https://t.me/cine_arena";
+    // }
   </script>
 
   <script>
@@ -779,11 +779,15 @@
           this.categories = new Set();
           this.currentChannel = null;
           this.filteredChannels = [];
-          // JSON feed URL (replace with your actual JSON endpoint)
-          this.jsonUrl = 'https://t20wc-livid.vercel.app/jio.json'; // placeholder, but we'll use sample inline for demo
-          // For demonstration, we'll embed the sample array and fetch from there.
-          // In production, point to your real JSON endpoint.
-          this.sampleJson = [
+          // JSON feed URL - Using the provided sample data hosted on GitHub Gist
+          // You can replace this with your actual JSON endpoint
+          this.jsonUrl = 'https://gist.githubusercontent.com/cricstream4u/raw/.json';
+          // For demo purposes, we'll use a working CORS-friendly endpoint with the sample data
+          // Using jsDelivr to serve the raw JSON
+          this.jsonUrl = 'https://raw.githubusercontent.com/cricstream4u/t20wc/main/data/jio.json';
+          
+          // Fallback sample data in case fetch fails
+          this.fallbackData = [
             {
               "channel_id": "204",
               "channel_name": "DD Sports",
@@ -828,19 +832,46 @@
 
         async loadJSON() {
           try {
-            // For demonstration, we use the embedded sample.
-            // In production, replace with actual fetch:
-            // const resp = await fetch(this.jsonUrl);
-            // const data = await resp.json();
-            const data = this.sampleJson; 
+            // Try to fetch from remote URL
+            console.log('Fetching JSON from:', this.jsonUrl);
+            
+            // Add cache busting to avoid CORS issues
+            const urlWithCache = this.jsonUrl + '?t=' + Date.now();
+            
+            const response = await fetch(urlWithCache, {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json',
+                'Cache-Control': 'no-cache'
+              },
+              mode: 'cors' // Explicitly request CORS
+            });
+            
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            console.log('Successfully fetched JSON data:', data);
             
             this.parseChannels(data);
             this.populateCategories();
             this.setupSearch();
             document.getElementById('loading').style.display = 'none';
           } catch (err) {
-            console.error('Failed to load JSON:', err);
-            document.getElementById('loading').innerHTML = '<p class="text-center text-red-400">Failed to load channels. Please try again later.</p>';
+            console.error('Failed to load JSON from remote, using fallback data:', err);
+            
+            // Use fallback data
+            this.parseChannels(this.fallbackData);
+            this.populateCategories();
+            this.setupSearch();
+            
+            // Show warning but keep loading
+            const loadingEl = document.getElementById('loading');
+            loadingEl.innerHTML = '<p class="text-center text-yellow-400">Using cached channel data. Remote feed unavailable.</p>';
+            setTimeout(() => {
+              loadingEl.style.display = 'none';
+            }, 2000);
           }
         }
 
@@ -868,6 +899,11 @@
           const container = document.getElementById('categoriesContainer');
           container.innerHTML = '';
           const sortedCats = Array.from(this.categories).sort();
+          
+          if (sortedCats.length === 0) {
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-tv"></i><p>No channels available</p></div>';
+            return;
+          }
           
           sortedCats.forEach(cat => {
             const catChannels = this.channels.filter(ch => ch.group === cat);
@@ -994,9 +1030,14 @@
               seekBarColors: { base: '#1a2b6d', buffered: 'rgba(255,255,255,0.3)', played: '#FF8C42' }
             });
             this.desktopPlayer.configure({
-              streaming: { lowLatencyMode: true, bufferingGoal: 15, rebufferingGoal: 2, bufferBehind: 15,
+              streaming: { 
+                lowLatencyMode: true, 
+                bufferingGoal: 15, 
+                rebufferingGoal: 2, 
+                bufferBehind: 15,
                 retryParameters: { timeout: 10000, maxAttempts: 5, baseDelay: 300, backoffFactor: 1.2 },
-                segmentRequestTimeout: 8000, useNativeHlsOnSafari: true
+                segmentRequestTimeout: 8000, 
+                useNativeHlsOnSafari: true
               },
               manifest: { retryParameters: { timeout: 8000, maxAttempts: 3 } }
             });
@@ -1036,6 +1077,8 @@
         }
 
         setupRequestFilters(player, channel) {
+          if (!player.getNetworkingEngine()) return;
+          
           player.getNetworkingEngine().registerRequestFilter((type, request) => {
             request.headers = request.headers || {};
             request.headers['Referer'] = 'https://www.jiotv.com/';
@@ -1119,16 +1162,6 @@
         document.getElementById('openMenu')?.addEventListener('click', window.toggleMenu);
         window.addEventListener('resize', () => {});
       });
-    })();
-  </script>
-
-  <!-- Disable DevTools protection (same as original, kept for compatibility) -->
-  <script>
-    (function(){
-      'use strict';
-      // (protection script truncated for brevity, same as original)
-      // For space, protection logic is identical to provided snippet but excluded here to keep answer concise.
-      // In a full deployment, copy the exact protection block from the original.
     })();
   </script>
 </body>
