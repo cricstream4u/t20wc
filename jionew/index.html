@@ -773,8 +773,8 @@
           this.currentChannel = null;
           this.filteredChannels = [];
           
-          // JSON feed URL - Using your actual JSON endpoint
-          // Replace this URL with your actual GitHub raw JSON URL
+          // JSON feed URL - Replace with your actual GitHub raw JSON URL
+          // Make sure your JSON file is valid (you can validate at jsonlint.com)
           this.jsonUrl = 'https://raw.githubusercontent.com/cricstream4u/t20wc/main/jio.json';
           
           this.desktopPlayer = null;
@@ -804,8 +804,34 @@
               throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
             }
             
-            const data = await response.json();
-            console.log('Successfully fetched JSON data:', data);
+            const text = await response.text();
+            
+            // Try to clean up the JSON if it's malformed
+            let cleanedText = text;
+            
+            // Remove any trailing commas before closing brackets (common JSON error)
+            cleanedText = cleanedText.replace(/,(\s*[\]}])/g, '$1');
+            
+            // Try to parse the cleaned JSON
+            let data;
+            try {
+              data = JSON.parse(cleanedText);
+            } catch (parseError) {
+              console.error('JSON parse error:', parseError);
+              
+              // If it's still failing, try a more aggressive cleanup
+              // Remove everything before the first [ and after the last ]
+              const firstBracket = cleanedText.indexOf('[');
+              const lastBracket = cleanedText.lastIndexOf(']');
+              if (firstBracket !== -1 && lastBracket !== -1 && lastBracket > firstBracket) {
+                const jsonArrayStr = cleanedText.substring(firstBracket, lastBracket + 1);
+                data = JSON.parse(jsonArrayStr);
+              } else {
+                throw new Error('Invalid JSON format');
+              }
+            }
+            
+            console.log('Successfully fetched JSON data:', data.length, 'channels');
             
             if (!data || data.length === 0) {
               throw new Error('JSON data is empty');
@@ -821,38 +847,49 @@
           } catch (err) {
             console.error('Failed to load JSON:', err);
             
-            // Show error message - NO FALLBACK DATA
+            // Show error message with details
             const loadingEl = document.getElementById('loading');
             loadingEl.innerHTML = `
               <div class="text-red-500 text-center">
                 <i class="fas fa-exclamation-triangle text-5xl mb-4"></i>
                 <p class="text-xl font-bold mb-2">Failed to load channels</p>
                 <p class="text-sm text-gray-400">${err.message}</p>
-                <p class="text-sm mt-4">Please check your JSON URL and try again</p>
-                <p class="text-xs mt-2 text-gray-500">URL: ${this.jsonUrl}</p>
+                <p class="text-sm mt-4">Please check:</p>
+                <ul class="text-xs mt-2 text-gray-500 list-disc text-left inline-block">
+                  <li>JSON URL is correct: ${this.jsonUrl}</li>
+                  <li>JSON file has valid format (validate at jsonlint.com)</li>
+                  <li>File is accessible (public repository)</li>
+                </ul>
               </div>
             `;
           }
         }
 
         parseChannels(jsonArray) {
-          this.channels = jsonArray.map(item => ({
-            id: item.channel_id,
-            name: item.channel_name,
-            group: item.channel_genre || 'Uncategorized',
-            logo: item.channel_logo || this.defaultLogo,
-            streamUrl: item.channel_url,
-            licenseKey: item.key ? `${item.keyId}:${item.key}` : null,
-            licenseType: item.key ? 'clearkey' : null,
-            userAgent: 'plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6',
-            cookie: item.cookie || ''
-          }));
+          this.channels = jsonArray
+            .filter(item => item && item.channel_id && item.channel_name) // Filter out invalid entries
+            .map(item => ({
+              id: item.channel_id,
+              name: item.channel_name,
+              group: item.channel_genre || 'Uncategorized',
+              logo: item.channel_logo || this.defaultLogo,
+              streamUrl: item.channel_url,
+              licenseKey: item.key && item.key !== 'null' ? `${item.keyId || ''}:${item.key}` : null,
+              licenseType: item.key && item.key !== 'null' ? 'clearkey' : null,
+              userAgent: 'plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6',
+              cookie: item.cookie || ''
+            }));
           
           this.categories.clear();
           this.channels.forEach(ch => {
             if (ch.group) this.categories.add(ch.group);
           });
+          
           console.log(`Loaded ${this.channels.length} channels, ${this.categories.size} categories`);
+          
+          if (this.channels.length === 0) {
+            throw new Error('No valid channels found in JSON');
+          }
         }
 
         populateCategories() {
