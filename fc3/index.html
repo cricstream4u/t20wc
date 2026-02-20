@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>(function(s){s.dataset.zone='10408286',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+<meta charset="UTF-8">
+<title>SonyLiv Live Events</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+:root{
+  --accent:#ff2c55;
+  --bg1:#1b2340;
+  --bg2:#070a14;
+  --card:#121a34;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Segoe UI,Roboto,Arial;
+  background:radial-gradient(circle at top,var(--bg1),var(--bg2));
+  color:#fff;
+  overflow-x:hidden;
+}
+
+/* ---------- HEADER ---------- */
+.header{
+  text-align:center;
+  padding:48px 16px 28px;
+}
+.header h1{
+  font-size:clamp(28px,6vw,48px);
+  margin:0;
+  background:linear-gradient(90deg,#ff416c,#ff4b2b);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+.header p{
+  color:#aaa;
+  margin-top:10px;
+  font-size:14px;
+}
+
+/* ---------- TABS ---------- */
+.tabs{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-bottom:28px;
+  flex-wrap:wrap;
+}
+.tabs button{
+  background:#1c2547;
+  color:#fff;
+  border:none;
+  padding:10px 22px;
+  border-radius:999px;
+  cursor:pointer;
+  font-weight:600;
+  transition:.3s ease;
+}
+.tabs button:hover{transform:translateY(-2px)}
+.tabs button.active{
+  background:var(--accent);
+  box-shadow:0 8px 25px rgba(255,44,85,.45);
+}
+
+/* ---------- GRID ---------- */
+.container{
+  padding:0 20px 60px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:26px;
+}
+
+/* ---------- CARD ---------- */
+.card{
+  background:var(--card);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 20px 40px rgba(0,0,0,.4);
+  cursor:pointer;
+  position:relative;
+  opacity:0;
+  transform:translateY(30px);
+  animation:cardIn .6s ease forwards;
+}
+.card:hover{
+  transform:translateY(-10px) scale(1.02);
+  box-shadow:0 30px 70px rgba(255,44,85,.35);
+}
+.card.upcoming{
+  opacity:.6;
+  cursor:not-allowed;
+  animation:cardIn .6s ease forwards;
+}
+.card img{
+  width:100%;
+  height:190px;
+  object-fit:cover;
+  transition:transform .45s ease;
+}
+.card:hover img{transform:scale(1.08)}
+
+.card-body{padding:18px}
+
+/* ---------- BADGE ---------- */
+.badge{
+  display:inline-block;
+  padding:5px 12px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  background:var(--accent);
+}
+.badge.up{background:#666}
+
+/* ---------- TEXT ---------- */
+.title{
+  font-size:17px;
+  margin:12px 0 6px;
+}
+.meta{
+  color:#bbb;
+  font-size:14px;
+}
+
+/* ---------- FOOTER ---------- */
+.footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:16px;
+}
+.watch{
+  background:var(--accent);
+  color:#fff;
+  padding:8px 18px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:14px;
+}
+
+/* ---------- ANIMATIONS ---------- */
+@keyframes cardIn{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:600px){
+  .card img{height:170px}
+  .container{gap:20px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h1>SonyLiv Live Events</h1>
+  <p id="updated">Loading…</p>
+</div>
+
+<div class="tabs">
+  <button class="active" onclick="filter('all')">All Events</button>
+  <button onclick="filter('live')">Live Now</button>
+  <button onclick="filter('upcoming')">Upcoming</button>
+</div>
+
+<div class="container" id="list"></div>
+
+<script>
+const JSON_URL =
+"https://raw.githubusercontent.com/drmlive/sliv-live-events/main/sonyliv.json";
+
+const STREAM_PROXY =
+"https://mini.allinonereborn.fun/events/stream_proxy.php?url=";
+
+let DATA=[];
+
+/* ---------- LOAD JSON ---------- */
+const xhr=new XMLHttpRequest();
+xhr.open("GET",JSON_URL,true);
+xhr.onload=()=>{
+  try{
+    const j=JSON.parse(xhr.responseText);
+    DATA=j.matches||[];
+    document.getElementById("updated").innerText =
+      "Last updated: "+(j["last update time"]||"Live");
+    render(DATA);
+  }catch{showEmpty();}
+};
+xhr.onerror=showEmpty;
+xhr.send();
+
+/* ---------- RENDER ---------- */
+function render(arr){
+  const box=document.getElementById("list");
+  box.innerHTML="";
+  if(!arr.length){showEmpty();return;}
+
+  arr.forEach((m,i)=>{
+    const live=m.isLive===true;
+    const url=live && m.video_url
+      ? "player.html?url="+encodeURIComponent(
+          STREAM_PROXY+m.video_url)
+      : "";
+
+    box.innerHTML+=`
+      <div class="card ${live?'':'upcoming'}"
+           style="animation-delay:${i*0.08}s"
+           ${live?`onclick="window.open('${url}','_blank')"`:""}>
+        <img src="${m.src||''}">
+        <div class="card-body">
+          <span class="badge ${live?'':'up'}">
+            ${live?'LIVE NOW':'UPCOMING'}
+          </span>
+
+          <div class="title">
+            ${m.match_name||m.event_name||'Live Event'}
+          </div>
+
+          <div class="meta">
+            ${m.broadcast_channel||''} • ${m.audioLanguageName||''}
+          </div>
+
+          <div class="footer">
+            <div class="meta">${m.event_category||''}</div>
+            ${live?`<div class="watch">Watch</div>`:""}
+          </div>
+        </div>
+      </div>`;
+  });
+}
+
+/* ---------- FILTER ---------- */
+function filter(type){
+  document.querySelectorAll(".tabs button")
+    .forEach(b=>b.classList.remove("active"));
+  event.target.classList.add("active");
+
+  if(type==="live") render(DATA.filter(x=>x.isLive));
+  else if(type==="upcoming") render(DATA.filter(x=>!x.isLive));
+  else render(DATA);
+}
+
+function showEmpty(){
+  document.getElementById("list").innerHTML =
+    "<div style='opacity:.6'>No events available</div>";
+}
+</script>
+
+</body>
+</html>
