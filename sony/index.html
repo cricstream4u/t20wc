@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer-when-downgrade" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><defs><linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%231E40AF;stop-opacity:1' /><stop offset='100%' style='stop-color:%233B82F6;stop-opacity:1' /></linearGradient></defs><rect x='5' y='5' width='50' height='50' rx='10' fill='url(%23grad)'/><text x='30' y='38' text-anchor='middle' font-family='Arial, sans-serif' font-size='24' font-weight='bold' fill='white'>CA</text></svg>">
+  <title>Cine Arena - Sony Channels</title>
+  <script src="https://concurfortunes.com/aa/46/da/aa46da6096d58e9e9d5c330697a13a08.js"></script>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1a2b6d;
+      --secondary: #2a4ab0;
+      --accent: #FF8C42;
+      --light: #f0f5ff;
+      --dark: #0c1a4a;
+      --card-bg: rgba(18, 33, 85, 0.6);
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0c1a4a 0%, #1a2b6d 100%);
+      min-height: 100vh;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 10% 20%, rgba(42, 74, 176, 0.15) 0%, transparent 20%), 
+                  radial-gradient(circle at 90% 80%, rgba(255, 140, 66, 0.15) 0%, transparent 20%);
+      z-index: -1;
+    }
+
+    .header-gradient {
+      background: rgba(26, 43, 109, 0.85);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 12px rgba(0,0,0,.15);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .site-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      width: 100%;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: white;
+      position: relative;
+      padding-bottom: 15px;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    .channel-card {
+      transition: all .3s ease;
+      border-radius: 12px;
+      overflow: hidden;
+      background: black;
+      position: relative;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+      transform: translateY(0);
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      min-height: 200px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .channel-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      background: rgba(26, 43, 109, 0.7);
+      border-color: rgba(255,140,66,0.3);
+    }
+
+    .channel-image-container {
+      padding: 20px 0 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-grow: 1;
+      background:var(--card-bg);
+    }
+
+    .channel-image {
+      height: 120px;
+      width: 100%;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .channel-title {
+      padding: 12px 8px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 600;
+      background: rgba(12, 26, 74, 0.8);
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .mobile-menu {
+      transform: translateX(-100%);
+      transition: transform .28s ease-in-out;
+    }
+
+    .mobile-menu.active {
+      transform: translateX(0);
+    }
+
+    .telegram-btn {
+      background: #09C842;
+      color: white;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .3s ease;
+      box-shadow: 0 4px 10px rgba(255, 106, 0, 0.3);
+    }
+
+    .telegram-btn:hover {
+      transform: scale(1.08);
+    }
+
+    .minimal-footer {
+      background: rgba(12, 26, 74, 0.9);
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+      font-size: .9rem;
+      margin-top: auto;
+      backdrop-filter: blur(5px);
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .telegram-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #09C842 0%, #09C842 100%);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      margin-top: 10px;
+      text-decoration: none;
+      transition: all .3s ease;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(255,106,0,0.18);
+      font-size: 0.95rem;
+    }
+
+    .channels-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      width: 100%;
+    }
+
+    .telegram-float {
+      position: fixed;
+      width: 55px;
+      height: 55px;
+      bottom: 20px;
+      right: 20px;
+      background: #0088cc;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform .3s, box-shadow .3s;
+    }
+
+    .telegram-float:hover {
+      transform: scale(1.12);
+      box-shadow: 0 12px 18px rgba(0,0,0,0.4);
+    }
+
+    .telegram-float img {
+      width: 60%;
+      filter: invert(0);
+    }
+      
+    .futuristic-logo {
+      position: relative;
+    }
+
+    .futuristic-logo::before {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #3b82f6, #10b981, transparent);
+      border-radius: 2px;
+    }
+
+    @media (max-width: 1200px) {
+      .channels-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 992px) {
+      .channels-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .channels-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+      }
+      .section-title { font-size: 1.6rem; }
+      .channel-image-container { padding: 15px 0 0 0; }
+      .channel-image { height: 100px; }
+      .channel-title { font-size: 0.85rem; padding: 10px 6px; }
+    }
+
+    @media (max-width: 480px) {
+      .channels-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .channel-card { min-height: 180px; }
+      .channel-image-container { padding: 12px 0 0 0; }
+      .channel-image { height: 90px; }
+      .channel-title { font-size: 0.8rem; padding: 8px 4px; }
+    }
+
+    @media (max-width: 360px) {
+      .channels-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header-gradient text-white site-container flex items-center justify-between sticky top-0 z-40 py-3">
+    <button id="openMenu" class="lg:hidden text-white" aria-label="Open menu">
+      <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+    </button>
+    <a href="https://cinearenalive.vercel.app" class="absolute left-1/2 transform -translate-x-1/2 lg:static lg:transform-none">
+      <span class="text-2xl font-bold tracking-wide tracking-tight futuristic-logo">
+        CineArena<span class="text-green-400">.Live</span>
+      </span>
+    </a>
+    <nav class="hidden lg:flex gap-6" aria-label="Main navigation">
+      <a href="https://cinearenalive.vercel.app" class="text-gray-300 hover:text-white flex items-center gap-1">
+        <i class="fas fa-home"></i>
+        Home
+      </a>
+      <a href="https://cinearenalive.vercel.app/sports/" class="text-gray-300 hover:text-white flex items-center gap-1">
+        <i class="fas fa-baseball-bat-ball text-orange-400"></i>
+        Sports
+      </a>
+      <a href="https://cinearenalive.vercel.app/fancode/" class="text-gray-300 hover:text-white flex items-center gap-1">
+        <i class="fas fa-tv text-blue-400"></i>
+        Fancode
+      </a>
+      <a href="https://cinearenalive.vercel.app/movies/" class="text-gray-300 hover:text-white flex items-center gap-1">
+        <i class="fas fa-film text-yellow-400"></i>
+        Movies
+      </a>
+      <a href="https://cinearenalive.vercel.app/music/" class="text-gray-300 hover:text-white flex items-center gap-1">
+        <i class="fas fa-music text-purple-400"></i>
+        Music
+      </a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href="https://t.me/cine_arena" target="_blank" rel="noopener" class="telegram-btn" aria-label="Telegram channel">
+        <i class="fab fa-telegram text-xl" aria-hidden="true"></i>
+      </a>
+    </div>
+  </header>
+
+  <div id="mobileMenu" class="mobile-menu fixed inset-0 z-50 lg:hidden" aria-hidden="true">
+    <div id="overlay" class="absolute inset-0 bg-black/70" onclick="toggleMenu()"></div>
+    <div class="relative w-4/5 max-w-xs h-full bg-[#0c1a4a] shadow-xl" role="dialog" aria-modal="true">
+      <div class="px-4 py-3 flex justify-between items-center header-gradient">
+        <span class="text-xl font-bold text-white">
+          CineArena<span class="text-green-400">.Live</span>
+        </span>
+        <button onclick="toggleMenu()" class="text-white p-1 rounded-full hover:bg-white/20" aria-label="Close menu">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <nav class="p-4">
+        <ul class="space-y-3">
+          <li>
+            <a href="https://cinearenalive.vercel.app" class="flex items-center px-4 py-3 rounded-lg text-gray-300 hover:bg-blue-500/20 hover:text-white">
+              <i class="fas fa-home mr-3 text-lg text-blue-400"></i>
+              Home
+            </a>
+          </li>
+          <li>
+            <a href="https://cinearenalive.vercel.app/sports/" class="flex items-center px-4 py-3 rounded-lg text-gray-300 hover:bg-blue-500/20 hover:text-white">
+              <i class="fas fa-baseball-bat-ball mr-3 text-lg text-orange-400"></i>
+              Sports
+            </a>
+          </li>
+          <li>
+            <a href="https://cinearenalive.vercel.app/fancode/" class="flex items-center px-4 py-3 rounded-lg text-gray-300 hover:bg-blue-500/20 hover:text-white">
+              <i class="fas fa-tv mr-3 text-lg text-blue-400"></i>
+              Fancode
+            </a>
+          </li>
+          <li>
+            <a href="https://cinearenalive.vercel.app/movies/" class="flex items-center px-4 py-3 rounded-lg text-gray-300 hover:bg-blue-500/20 hover:text-white">
+              <i class="fas fa-film mr-3 text-lg text-yellow-400"></i>
+              Movies
+            </a>
+          </li>
+          <li>
+            <a href="https://cinearenalive.vercel.app/music/" class="flex items-center px-4 py-3 rounded-lg text-gray-300 hover:bg-blue-500/20 hover:text-white">
+              <i class="fas fa-music mr-3 text-lg text-purple-400"></i>
+              Music
+            </a>
+          </li>
+          <li>
+            <a href="https://t.me/cine_arena" target="_blank" rel="noopener" class="flex items-center px-4 py-3 rounded-lg text-gray-300 hover:bg-blue-500/20 hover:text-white">
+              <i class="fab fa-telegram mr-3 text-lg text-blue-300"></i>
+              Telegram Channel
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <main class="site-container px-4 py-6 mx-auto" id="main">
+    <h2 class="section-title">
+      <i class="fas fa-tv text-blue-400 mr-2"></i>
+      Sony Channels
+    </h2>
+    
+    <!-- Channels container -->
+    <div class="channels-grid" id="channelGrid" aria-live="polite">
+      <!-- Sony channel cards will be inserted here -->
+    </div>
+    
+    <!-- Loading indicator -->
+    <div id="loading" class="text-center py-8">
+      <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
+      <p class="mt-4 text-gray-300">Loading Sony channels...</p>
+    </div>
+    
+    <!-- Error message -->
+    <div id="errorMessage" class="hidden p-4 bg-red-900/30 rounded-lg border border-red-700/50 text-center">
+      <p class="text-red-300">Failed to load channels. Please try again later.</p>
+    </div>
+    
+    <!-- Disclaimer -->
+    <div class="mt-8 p-4 bg-blue-900/30 rounded-lg border border-blue-700/50">
+      <p class="text-sm text-gray-300 text-center">
+        This site is not affiliated with any television channel. All content is copyright of their respective owners. 
+        We cannot accept any responsibility for the content on this site. We cannot control or influence any audiovisual 
+        content on this site. Viewers are expected to be wise in processing the information obtained. All links provided 
+        on this site are indexed from third-party websites. We do not host any content.
+      </p>
+      <p class="text-center mt-2">
+        <a href="https://t.me/stream247" class="text-cyan-300 hover:text-cyan-200">Contact: https://t.me/stream247</a>
+      </p>
+    </div>
+  </main>
+
+  <a href="https://t.me/cine_arena" class="telegram-float" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+  </a>
+
+  <div class="minimal-footer">
+    <div class="site-container">
+      <a href="https://t.me/cine_arena" target="_blank" rel="noopener" class="telegram-link">
+        <i class="fab fa-telegram" aria-hidden="true"></i>
+        Join our Telegram Channel
+      </a>
+    </div>
+  </div>
+
+  <script>
+function _0xfa30(_0x4970fc,_0x4a1a88){_0x4970fc=_0x4970fc-0xf4;const _0x57ccdf=_0x57cc();let _0xfa30e0=_0x57ccdf[_0x4970fc];return _0xfa30e0;}const _0x3d22fe=_0xfa30;(function(_0x42b4f7,_0x51cf04){const _0x2d609e=_0xfa30,_0x360c75=_0x42b4f7();while(!![]){try{const _0x4abf9a=parseInt(_0x2d609e(0x10b))/0x1*(-parseInt(_0x2d609e(0x114))/0x2)+parseInt(_0x2d609e(0x116))/0x3+parseInt(_0x2d609e(0xf9))/0x4+parseInt(_0x2d609e(0xfb))/0x5*(-parseInt(_0x2d609e(0x100))/0x6)+parseInt(_0x2d609e(0x117))/0x7+-parseInt(_0x2d609e(0x122))/0x8+parseInt(_0x2d609e(0x119))/0x9;if(_0x4abf9a===_0x51cf04)break;else _0x360c75['push'](_0x360c75['shift']());}catch(_0x32044e){_0x360c75['push'](_0x360c75['shift']());}}}(_0x57cc,0x4b583));class SonyChannelsApp{constructor(){const _0x399bff=_0xfa30;this[_0x399bff(0xfc)](),this[_0x399bff(0x112)]();}[_0x3d22fe(0xfc)](){const _0x12b0d2=_0x3d22fe;document['getElementById'](_0x12b0d2(0xfa))[_0x12b0d2(0x106)](_0x12b0d2(0x118),()=>this[_0x12b0d2(0x10c)]()),document['querySelector'](_0x12b0d2(0x102))['addEventListener'](_0x12b0d2(0x118),()=>this[_0x12b0d2(0x10c)]());}[_0x3d22fe(0x10c)](){const _0x5c4a4b=_0x3d22fe,_0x42b6a1=document[_0x5c4a4b(0xff)]('mobileMenu');_0x42b6a1[_0x5c4a4b(0x11f)][_0x5c4a4b(0x113)](_0x5c4a4b(0x103));}async[_0x3d22fe(0x112)](){const _0x56f662=_0x3d22fe;try{const _0x2ab977=await fetch(_0x56f662(0xfe));if(!_0x2ab977['ok'])throw new Error(_0x56f662(0x111)+_0x2ab977[_0x56f662(0x107)]);const _0x2d81f7=await _0x2ab977[_0x56f662(0x104)](),_0x32bb30=document[_0x56f662(0xff)]('loading');_0x32bb30&&(_0x32bb30['style'][_0x56f662(0x101)]=_0x56f662(0x110));const _0x11d774=document[_0x56f662(0xff)](_0x56f662(0xf8));_0x11d774[_0x56f662(0xf6)]='';const _0x18df1d=document[_0x56f662(0xff)](_0x56f662(0x105));_0x18df1d&&_0x18df1d['classList'][_0x56f662(0x11b)](_0x56f662(0x11e)),_0x2d81f7['forEach'](_0x2cd9fd=>{const _0x12489c=_0x56f662,_0xa52dad=this[_0x12489c(0x109)](_0x2cd9fd);_0x11d774['appendChild'](_0xa52dad);}),_0x2d81f7[_0x56f662(0xfd)]===0x0&&(_0x11d774[_0x56f662(0xf6)]='<p\x20class=\x22text-center\x20text-gray-400\x20col-span-full\x22>No\x20channels\x20found.</p>');}catch(_0x4616e3){console['error'](_0x56f662(0x10f),_0x4616e3);const _0x42d9d6=document[_0x56f662(0xff)](_0x56f662(0x121));_0x42d9d6&&(_0x42d9d6[_0x56f662(0xf4)]['display']=_0x56f662(0x110));const _0x1e6485=document[_0x56f662(0xff)](_0x56f662(0x105));_0x1e6485&&_0x1e6485[_0x56f662(0x11f)][_0x56f662(0x10a)](_0x56f662(0x11e));const _0x596786=document[_0x56f662(0xff)](_0x56f662(0xf8));_0x596786[_0x56f662(0xf6)]=_0x56f662(0x11a);}}[_0x3d22fe(0x109)](_0x556b98){const _0x28513c=_0x3d22fe,_0x2cb2c9=document['createElement']('div');_0x2cb2c9['className']='channel-card';const _0x25a46b='https://cinearena.live/player.html?url=https://raw.githubusercontent.com/Sflex0719/SonGharLive/main/SL.m3u&id='+_0x556b98['id'];return _0x2cb2c9[_0x28513c(0x106)]('click',()=>{const _0x2bf260=_0x28513c;window[_0x2bf260(0x10d)]['href']=_0x25a46b;}),_0x2cb2c9[_0x28513c(0xf6)]='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22channel-image-container\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22channel-image\x22\x20style=\x22background-image:\x20url(\x27'+(_0x556b98[_0x28513c(0x10e)]||'')+_0x28513c(0x108)+(_0x556b98[_0x28513c(0xf7)]||_0x28513c(0x11c))+_0x28513c(0x120),_0x2cb2c9;}}document[_0x3d22fe(0x106)](_0x3d22fe(0x11d),()=>{const _0x4eb763=_0x3d22fe;window[_0x4eb763(0xf5)]=new SonyChannelsApp();});function toggleMenu(){const _0xf2e81c=_0x3d22fe,_0x267176=document[_0xf2e81c(0xff)](_0xf2e81c(0x115));_0x267176[_0xf2e81c(0x11f)]['toggle'](_0xf2e81c(0x103));}function _0x57cc(){const _0x12e228=['loading','2101704iFXIvf','style','sonyApp','innerHTML','name','channelGrid','95964QpfBAT','openMenu','41985oQPepX','setupEventListeners','length','https://cinearenalive.vercel.app/json/sony.json','getElementById','348eWIWRT','display','#overlay','active','json','errorMessage','addEventListener','status','\x27)\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22channel-title\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','createChannelCard','remove','1cARjXZ','toggleMenu','location','logo','Error\x20loading\x20Sony\x20channels:','none','HTTP\x20error!\x20status:\x20','loadChannels','toggle','562594eyzlyG','mobileMenu','920430eRtkPQ','2807749yWbGci','click','5469651QmQxjc','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22col-span-full\x20text-center\x20p-8\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22inline-block\x20mb-4\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-exclamation-triangle\x20text-4xl\x20text-red-400\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-gray-300\x20mb-2\x22>Failed\x20to\x20load\x20Sony\x20channels</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22text-gray-400\x20text-sm\x22>Please\x20check\x20your\x20connection\x20and\x20try\x20again</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20onclick=\x22location.reload()\x22\x20class=\x22mt-4\x20px-4\x20py-2\x20bg-blue-600\x20hover:bg-blue-700\x20rounded-lg\x20text-white\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-redo\x20mr-2\x22></i>Reload\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','add','Unknown\x20Channel','DOMContentLoaded','hidden','classList','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20'];_0x57cc=function(){return _0x12e228;};return _0x57cc();}
+  </script>
+    
+  <!-- Disable Dev -->
+    <script>
+        function _0xd920(_0x43ab84,_0x28c1d5){_0x43ab84=_0x43ab84-0xea;const _0x107b17=_0x107b();let _0xd920ba=_0x107b17[_0x43ab84];return _0xd920ba;}(function(_0x285508,_0x15ed05){const _0x4b9c78=_0xd920,_0x62ef79=_0x285508();while(!![]){try{const _0x483870=-parseInt(_0x4b9c78(0x113))/0x1+parseInt(_0x4b9c78(0x14a))/0x2+-parseInt(_0x4b9c78(0x11a))/0x3+parseInt(_0x4b9c78(0x123))/0x4+-parseInt(_0x4b9c78(0x110))/0x5*(parseInt(_0x4b9c78(0x108))/0x6)+parseInt(_0x4b9c78(0xf1))/0x7+parseInt(_0x4b9c78(0x157))/0x8*(parseInt(_0x4b9c78(0xfb))/0x9);if(_0x483870===_0x15ed05)break;else _0x62ef79['push'](_0x62ef79['shift']());}catch(_0x5091df){_0x62ef79['push'](_0x62ef79['shift']());}}}(_0x107b,0xd3eed),(function(){'use strict';const _0x371cbc=_0xd920;const _0x4afab2={'detectionInterval':0x3e8,'maxViolations':0x3,'redirectUrl':_0x371cbc(0xec),'enableLogging':![],'antiDebug':!![],'antiTamper':!![],'blockDevTools':!![]};let _0x13f7fc=0x0,_0x2cb5a4=!![],_0x21c9d2=0x0;const _0x79fca2=new WeakSet(),_0x4bb267={'debuggerLoop':function(){const _0xed2966=_0x371cbc;if(!_0x4afab2[_0xed2966(0x155)])return;const _0x27a41c=Date[_0xed2966(0x14e)](),_0x2a4811=function(){},_0x917809=setInterval(()=>{const _0x233791=_0xed2966;if(Date[_0x233791(0x14e)]()-_0x27a41c>0xc8){clearInterval(_0x917809);return;}_0x2a4811();debugger;},0x64);},'performanceCheck':function(){const _0x3363c0=_0x371cbc,_0x3fcb1f=0x64,_0x5d8ea6=performance['now']();debugger;const _0x3636dc=performance['now']();_0x3636dc-_0x5d8ea6>_0x3fcb1f&&this[_0x3363c0(0xf0)](_0x3363c0(0x146));},'redefineConsole':function(){const _0x32f2cf=_0x371cbc;if(!console)return;const _0x40ac82=[_0x32f2cf(0xff),'info',_0x32f2cf(0xed),_0x32f2cf(0x125),_0x32f2cf(0xfa),_0x32f2cf(0x148),'dir'];_0x40ac82[_0x32f2cf(0x10b)](_0x4f9fea=>{const _0xda92aa=console[_0x4f9fea];_0xda92aa&&(console[_0x4f9fea]=function(..._0x198451){const _0x35950a=_0xd920;_0x4afab2[_0x35950a(0x13b)]&&_0xda92aa[_0x35950a(0xee)](console,[_0x35950a(0x159),..._0x198451]);});});},'obfuscateCode':function(){const _0x33f340=_0x371cbc;document[_0x33f340(0x158)](_0x33f340(0x164),function(){const _0x21fcd9=_0x33f340,_0x29f4fc=document[_0x21fcd9(0x120)]('script');for(let _0x31f5f7 of _0x29f4fc){(_0x31f5f7['textContent'][_0x21fcd9(0x12e)]('debugger')||_0x31f5f7[_0x21fcd9(0x15e)][_0x21fcd9(0x12e)]('console.log'))&&(_0x31f5f7[_0x21fcd9(0x15e)]=_0x31f5f7[_0x21fcd9(0x15e)][_0x21fcd9(0x114)](/\/\/.*$/gm,'')['replace'](/\/\*[\s\S]*?\*\//g,'')[_0x21fcd9(0x114)](/\s+/g,'\x20')[_0x21fcd9(0x137)]());}});}},_0x1e7f1a={'dimensionCheck':function(){const _0xe936aa=_0x371cbc,_0x1d7073=0xa0,_0x405779=0x64,_0x4909eb=window[_0xe936aa(0x101)]-window[_0xe936aa(0xef)],_0x928274=window[_0xe936aa(0x118)]-window[_0xe936aa(0xf9)];return _0x4909eb>_0x1d7073||_0x928274>_0x405779;},'consoleOverrideCheck':function(){const _0x5d2040=_0x371cbc,_0x2ccd62=document[_0x5d2040(0x116)](_0x5d2040(0x106));Object['defineProperty'](_0x2ccd62,'id',{'get':function(){const _0x1b83c6=_0x5d2040;return _0x1e7f1a[_0x1b83c6(0x111)](_0x1b83c6(0x115)),'';}});try{console['log'](_0x2ccd62);}catch(_0x190b10){return!![];}return![];},'debuggerToStringCheck':function(){const _0x49f8d4=_0x371cbc,_0x595cd0=function(){debugger;};return _0x595cd0[_0x49f8d4(0x11d)]()[_0x49f8d4(0x10f)](_0x49f8d4(0x144))!==-0x1;},'errorStackCheck':function(){const _0x5c7680=_0x371cbc;try{throw new Error();}catch(_0xd8f4ea){return _0xd8f4ea[_0x5c7680(0x15a)][_0x5c7680(0x12e)]('at\x20eval')||_0xd8f4ea['stack']['includes'](_0x5c7680(0xf6))||_0xd8f4ea[_0x5c7680(0x15a)][_0x5c7680(0x12e)]('moz-extension://');}},'memoryCheck':function(){const _0x468a12=_0x371cbc;if(performance&&performance['memory']){const _0x551587=performance[_0x468a12(0x119)];return _0x551587[_0x468a12(0x13e)]>_0x551587[_0x468a12(0x133)]*0.8;}return![];},'handleDetection':function(_0x6540f3){const _0x205f3a=_0x371cbc;_0x4afab2[_0x205f3a(0x13b)]&&console[_0x205f3a(0xed)](_0x205f3a(0x14b)+_0x6540f3),_0x1e7f1a['triggerProtection']();}},_0x247d60={'blockShortcuts':function(){const _0x255533=_0x371cbc;document[_0x255533(0x158)](_0x255533(0x162),function(_0x27f8f4){const _0x53bc67=_0x255533;if(_0x27f8f4[_0x53bc67(0x131)]==='F12')return _0x27f8f4[_0x53bc67(0x150)](),_0x27f8f4[_0x53bc67(0x10e)](),this[_0x53bc67(0xf0)]('f12_pressed'),![];if(_0x27f8f4[_0x53bc67(0x129)]&&_0x27f8f4[_0x53bc67(0xf5)]){if(['I','J','C'][_0x53bc67(0x12e)](_0x27f8f4['key'][_0x53bc67(0x149)]()))return _0x27f8f4[_0x53bc67(0x150)](),_0x27f8f4[_0x53bc67(0x10e)](),this[_0x53bc67(0xf0)](_0x53bc67(0x10d)),![];}if(_0x27f8f4[_0x53bc67(0x129)]&&_0x27f8f4[_0x53bc67(0x131)]==='u')return _0x27f8f4[_0x53bc67(0x150)](),_0x27f8f4['stopPropagation'](),this[_0x53bc67(0xf0)](_0x53bc67(0x117)),![];if(_0x27f8f4[_0x53bc67(0x129)]&&_0x27f8f4[_0x53bc67(0x131)]==='s')return _0x27f8f4['preventDefault'](),_0x27f8f4[_0x53bc67(0x10e)](),![];if(_0x27f8f4[_0x53bc67(0x13d)]&&_0x27f8f4['key']==='Menu')return _0x27f8f4[_0x53bc67(0x150)](),_0x27f8f4[_0x53bc67(0x10e)](),![];}['bind'](this));},'blockContextMenu':function(){const _0x5f5477=_0x371cbc;document['addEventListener'](_0x5f5477(0x138),function(_0x43a79f){const _0x19e11d=_0x5f5477;return _0x43a79f['preventDefault'](),_0x43a79f[_0x19e11d(0x10e)](),this[_0x19e11d(0xf0)](_0x19e11d(0x15b)),![];}[_0x5f5477(0xfe)](this)),document[_0x5f5477(0x158)]('touchstart',function(_0xc8cd25){_0xc8cd25['touches']['length']>0x1&&this['handleViolation']('multi_touch');}[_0x5f5477(0xfe)](this),{'passive':![]});},'preventCopyPaste':function(){const _0x59b804=_0x371cbc;document[_0x59b804(0x158)](_0x59b804(0x136),function(_0x2bb102){const _0x48a242=_0x59b804;return _0x2bb102[_0x48a242(0x150)](),![];}),document[_0x59b804(0x158)](_0x59b804(0x15c),function(_0x517e23){const _0x43d6db=_0x59b804;return _0x517e23[_0x43d6db(0x150)](),this['handleViolation'](_0x43d6db(0x14f)),![];}[_0x59b804(0xfe)](this)),document['addEventListener'](_0x59b804(0x135),function(_0x4605d8){const _0x511071=_0x59b804;return _0x4605d8[_0x511071(0x150)](),this[_0x511071(0xf0)]('cut_attempt'),![];}['bind'](this)),document['addEventListener'](_0x59b804(0x122),function(_0x4856cf){const _0x3c8874=_0x59b804;return _0x4856cf[_0x3c8874(0x150)](),this[_0x3c8874(0xf0)](_0x3c8874(0x112)),![];}[_0x59b804(0xfe)](this));},'preventDragDrop':function(){const _0x163078=_0x371cbc;document[_0x163078(0x158)](_0x163078(0x13a),function(_0x208c7e){const _0x1e138f=_0x163078;if(_0x208c7e[_0x1e138f(0x11e)][_0x1e138f(0x156)]!==_0x1e138f(0xf7)&&_0x208c7e['target'][_0x1e138f(0x156)]!==_0x1e138f(0x128))return _0x208c7e[_0x1e138f(0x150)](),![];}),document[_0x163078(0x158)](_0x163078(0x126),function(_0x44cfd1){const _0x397219=_0x163078;return _0x44cfd1[_0x397219(0x150)](),![];});},'monitorDOM':function(){const _0xc04322=_0x371cbc;if(!_0x4afab2['antiTamper'])return;const _0x37cccc=new MutationObserver(function(_0x1d96e0){_0x1d96e0['forEach'](function(_0x4737a0){const _0x14513e=_0xd920;_0x4737a0['type']==='attributes'&&_0x4737a0[_0x14513e(0x12c)]==='id'&&_0x4737a0[_0x14513e(0x11e)]['id']===_0x14513e(0x12f)&&handleViolation(_0x14513e(0x139));});});_0x37cccc[_0xc04322(0x10c)](document[_0xc04322(0x12a)],{'attributes':!![],'childList':!![],'subtree':!![],'attributeFilter':['id',_0xc04322(0x103),_0xc04322(0x140)]});}},_0x55b2a2={'handleViolation':function(_0x2b1a13){const _0x64841b=_0x371cbc,_0xd2e7e3=Date[_0x64841b(0x14e)]();if(_0xd2e7e3-_0x21c9d2<0x1f4)return;_0x21c9d2=_0xd2e7e3,_0x13f7fc++;_0x4afab2[_0x64841b(0x13b)]&&console['error']('Security\x20violation\x20['+_0x2b1a13+_0x64841b(0x102)+_0x13f7fc+'/'+_0x4afab2[_0x64841b(0x130)]);switch(_0x13f7fc){case 0x1:this[_0x64841b(0x11b)](_0x2b1a13);break;case 0x2:this[_0x64841b(0x152)](_0x2b1a13);break;case 0x3:this[_0x64841b(0x105)](_0x2b1a13);break;default:this[_0x64841b(0x13c)](_0x2b1a13);}},'warning':function(_0xa96106){const _0xf50975=_0x371cbc,_0x2c2c50=document[_0xf50975(0x116)](_0xf50975(0x106));_0x2c2c50[_0xf50975(0x140)]['cssText']='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20position:\x20fixed;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20top:\x2010px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20right:\x2010px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20background:\x20#ff4444;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20color:\x20white;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20padding:\x2010px\x2020px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20border-radius:\x205px;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20z-index:\x20999999;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20font-family:\x20Arial,\x20sans-serif;\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20box-shadow:\x200\x202px\x2010px\x20rgba(0,0,0,0.3);\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',_0x2c2c50['textContent']=_0xf50975(0x163),document[_0xf50975(0x147)][_0xf50975(0x12d)](_0x2c2c50),setTimeout(()=>{_0x2c2c50['parentNode']&&_0x2c2c50['parentNode']['removeChild'](_0x2c2c50);},0xbb8);},'blockInteraction':function(_0x52ea07){const _0xa8dbc6=_0x371cbc;document[_0xa8dbc6(0x147)][_0xa8dbc6(0x140)]['pointerEvents']=_0xa8dbc6(0xea),document[_0xa8dbc6(0x147)][_0xa8dbc6(0x140)][_0xa8dbc6(0x143)]='0.5',setTimeout(()=>{const _0x4202b0=_0xa8dbc6;document[_0x4202b0(0x147)]['style'][_0x4202b0(0x145)]='',document[_0x4202b0(0x147)]['style'][_0x4202b0(0x143)]='';},0x7d0),document[_0xa8dbc6(0x147)][_0xa8dbc6(0x140)][_0xa8dbc6(0x141)]=_0xa8dbc6(0x153),setTimeout(()=>{const _0x5b19ae=_0xa8dbc6;document[_0x5b19ae(0x147)][_0x5b19ae(0x140)][_0x5b19ae(0x141)]='';},0x1f4);if(!document['querySelector'](_0xa8dbc6(0x151))){const _0x38d953=document[_0xa8dbc6(0x116)](_0xa8dbc6(0x140));_0x38d953['id']=_0xa8dbc6(0xfd),_0x38d953[_0xa8dbc6(0x15e)]=_0xa8dbc6(0x160),document['head'][_0xa8dbc6(0x12d)](_0x38d953);}},'redirectOrClose':function(_0x932dfd){const _0x496e91=_0x371cbc;try{window[_0x496e91(0x13f)]['href']=_0x4afab2[_0x496e91(0x15f)],setTimeout(()=>{const _0x5378c6=_0x496e91;window[_0x5378c6(0x13f)][_0x5378c6(0x100)]!==_0x4afab2[_0x5378c6(0x15f)]&&this[_0x5378c6(0x13c)](_0x932dfd);},0x3e8);}catch(_0x4d9157){this['nuclearOption'](_0x932dfd);}},'nuclearOption':function(_0x316456){const _0x4ef171=_0x371cbc;document[_0x4ef171(0x147)]['innerHTML']=_0x4ef171(0xf2),document[_0x4ef171(0x147)][_0x4ef171(0x140)][_0x4ef171(0xfc)]=_0x4ef171(0x11f);const _0x3f516e=setTimeout(()=>{},0x0);for(let _0x26908f=0x0;_0x26908f<_0x3f516e;_0x26908f++){clearTimeout(_0x26908f),clearInterval(_0x26908f);}const _0x1a516a=EventTarget[_0x4ef171(0x134)][_0x4ef171(0x158)];EventTarget['prototype'][_0x4ef171(0x158)]=function(){},window[_0x4ef171(0x132)]=null,window[_0x4ef171(0x14c)]=null,_0x2cb5a4=![];},'triggerProtection':function(){const _0x30867b=_0x371cbc;if(!_0x4afab2[_0x30867b(0x142)])return;setInterval(function(){debugger;},0x64),setTimeout(function(){const _0x36c9f3=_0x30867b,_0x410cc3=[];for(let _0x470a75=0x0;_0x470a75<0xf4240;_0x470a75++){_0x410cc3['push'](new Array(0x3e8)[_0x36c9f3(0x14d)]('x'));}},0x1388);let _0x253ca7=0x0;const _0x240230=setInterval(function(){const _0x542f5c=_0x30867b;_0x253ca7++<0x5?window[_0x542f5c(0x13f)][_0x542f5c(0x10a)]=_0x542f5c(0x12b)+Date[_0x542f5c(0x14e)]():clearInterval(_0x240230);},0x64);}};function _0x2fe2cd(){const _0x35fae7=_0x371cbc,_0x275012=_0x55b2a2[_0x35fae7(0xf0)][_0x35fae7(0xfe)](_0x55b2a2);_0x247d60[_0x35fae7(0xf8)][_0x35fae7(0xeb)]({'handleViolation':_0x275012}),_0x247d60[_0x35fae7(0x107)]['call']({'handleViolation':_0x275012}),_0x247d60[_0x35fae7(0x124)][_0x35fae7(0xeb)]({'handleViolation':_0x275012}),_0x247d60['preventDragDrop']['call']({'handleViolation':_0x275012}),_0x247d60[_0x35fae7(0x154)][_0x35fae7(0xeb)]({'handleViolation':_0x275012});_0x4afab2['antiDebug']&&(_0x4bb267[_0x35fae7(0x15d)](),_0x4bb267['obfuscateCode'](),setInterval(()=>{const _0x1ddd66=_0x35fae7;try{_0x4bb267[_0x1ddd66(0xf4)][_0x1ddd66(0xeb)]({'handleViolation':_0x275012});}catch(_0x9a681f){}},_0x4afab2[_0x35fae7(0x109)]));_0x4afab2['blockDevTools']&&setInterval(()=>{const _0x45892a=_0x35fae7;(_0x1e7f1a[_0x45892a(0x11c)]()||_0x1e7f1a[_0x45892a(0x104)]()||_0x1e7f1a[_0x45892a(0xf3)]()||_0x1e7f1a[_0x45892a(0x121)]())&&_0x1e7f1a['handleDetection'](_0x45892a(0x127));},_0x4afab2['detectionInterval']);_0x4afab2['antiDebug']&&setTimeout(()=>{try{debugger;}catch(_0x1715ca){}},0x7d0);const _0x569d2f=EventTarget[_0x35fae7(0x134)]['removeEventListener'];EventTarget[_0x35fae7(0x134)]['removeEventListener']=function(_0x31f894,_0x4ed611,_0x5cc429){const _0x4c575d=_0x35fae7;if(_0x31f894===_0x4c575d(0x162)||_0x31f894==='contextmenu'){_0x4afab2[_0x4c575d(0x13b)]&&console[_0x4c575d(0xed)]('Attempt\x20to\x20remove\x20security\x20event\x20listener\x20blocked');return;}_0x569d2f[_0x4c575d(0xeb)](this,_0x31f894,_0x4ed611,_0x5cc429);};}document[_0x371cbc(0x161)]==='loading'?document[_0x371cbc(0x158)](_0x371cbc(0x164),_0x2fe2cd):_0x2fe2cd(),window['pageProtection']={'disable':function(){_0x2cb5a4=![],_0x13f7fc=0x0;},'enable':function(){_0x2cb5a4=!![];},'status':function(){return{'protected':_0x2cb5a4,'violations':_0x13f7fc,'config':_0x4afab2};}};}()));function _0x107b(){const _0x19e7e=[']:\x20','class','consoleOverrideCheck','redirectOrClose','div','blockContextMenu','3999264uMWeeI','detectionInterval','hash','forEach','observe','devtools_shortcut','stopPropagation','indexOf','10RzILkU','handleDetection','paste_attempt','1019935QlUVNI','replace','getter_trap','createElement','view_source','outerHeight','memory','3250062gCWShJ','warning','dimensionCheck','toString','target','hidden','getElementsByTagName','memoryCheck','paste','3563496SNLRQn','preventCopyPaste','error','drop','combined_check','TEXTAREA','ctrlKey','documentElement','devtools_blocked_','attributeName','appendChild','includes','chrome-dev-tools','maxViolations','key','onbeforeunload','jsHeapSizeLimit','prototype','cut','selectstart','trim','contextmenu','dom_tampering','dragstart','enableLogging','nuclearOption','altKey','usedJSHeapSize','location','style','animation','blockDevTools','opacity','debugger','pointerEvents','performance_debugging_detected','body','table','toUpperCase','1936248CJEGCK','DevTools\x20detection\x20via:\x20','onunload','join','now','copy_attempt','preventDefault','#shake-style','blockInteraction','shake\x200.5s','monitorDOM','antiDebug','tagName','15458056yxROlb','addEventListener','[Protected]','stack','context_menu','copy','redefineConsole','textContent','redirectUrl','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20@keyframes\x20shake\x20{\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x200%,\x20100%\x20{transform:\x20translateX(0);}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2010%,\x2030%,\x2050%,\x2070%,\x2090%\x20{transform:\x20translateX(-5px);}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x2020%,\x2040%,\x2060%,\x2080%\x20{transform:\x20translateX(5px);}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20}\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','readyState','keydown','⚠️\x20Inspection\x20tools\x20are\x20disabled','DOMContentLoaded','none','call','about:blank','warn','apply','innerWidth','handleViolation','3592393ioXSnw','<div\x20style=\x22position:fixed;top:0;left:0;width:100%;height:100%;background:black;color:white;display:flex;align-items:center;justify-content:center;font-size:24px;z-index:9999999;\x22>Access\x20Restricted</div>','errorStackCheck','performanceCheck','shiftKey','chrome-extension://','INPUT','blockShortcuts','innerHeight','debug','9NygKOy','overflow','shake-style','bind','log','href','outerWidth'];_0x107b=function(){return _0x19e7e;};return _0x107b();}
+    </script>
+
+</body>
+</html>
