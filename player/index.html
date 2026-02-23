@@ -1,0 +1,365 @@
+
+ 
+  <meta name="referrer" content="no-referrer"> 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.6.0/shaka-player.ui.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.6.0/controls.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      background: #000;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    .shaka-video-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      background: #000;
+      object-fit: contain;
+    }
+  
+
+
+
+    /* YouTube Theme CSS */
+    @font-face {
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Me5Q.ttf) format('truetype');
+    }
+    @font-face {
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/roboto/v27/KFOlCnqEu92Fr1MmEU9vAw.ttf) format('truetype');
+    }
+    .youtube-theme {
+      font-family: 'Roboto', sans-serif;
+    }
+    .youtube-theme .shaka-bottom-controls {
+      width: 100%;
+      padding: 0;
+      padding-bottom: 0;
+      z-index: 1;
+    }
+    .youtube-theme .shaka-bottom-controls {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+          -ms-flex-direction: column;
+              flex-direction: column;
+    }
+    .youtube-theme .shaka-ad-controls {
+      -webkit-box-ordinal-group: 2;
+          -ms-flex-order: 1;
+              order: 1;
+    }
+    .youtube-theme .shaka-controls-button-panel {
+      -webkit-box-ordinal-group: 3;
+          -ms-flex-order: 2;
+              order: 2;
+      height: 50px;
+      padding: 0 10px;
+    }
+    .youtube-theme .shaka-range-container {
+      margin: 4px 10px 4px 10px;
+      top: 0;
+    }
+    .youtube-theme .shaka-small-play-button {
+      -webkit-box-ordinal-group: -2;
+          -ms-flex-order: -3;
+              order: -3;
+    }
+    .youtube-theme .shaka-mute-button {
+      -webkit-box-ordinal-group: -1;
+          -ms-flex-order: -2;
+              order: -2;
+    }
+    .youtube-theme .shaka-controls-button-panel > * {
+      margin: 0;
+      padding: 3px 8px;
+      color: #EEE;
+      height: 40px;
+    }
+    .youtube-theme .shaka-controls-button-panel > *:focus {
+      outline: none;
+      -webkit-box-shadow: inset 0 0 0 2px rgba(27, 127, 204, 0.8);
+              box-shadow: inset 0 0 0 2px rgba(27, 127, 204, 0.8);
+      color: #FFF;
+    }
+    .youtube-theme .shaka-controls-button-panel > *:hover {
+      color: #FFF;
+    }
+    .youtube-theme .shaka-controls-button-panel .shaka-volume-bar-container {
+      position: relative;
+      z-index: 10;
+      left: -1px;
+      -webkit-box-ordinal-group: 0;
+          -ms-flex-order: -1;
+              order: -1;
+      opacity: 0;
+      width: 0px;
+      -webkit-transition: width 0.2s cubic-bezier(0.4, 0, 1, 1);
+      height: 3px;
+      transition: width 0.2s cubic-bezier(0.4, 0, 1, 1);
+      padding: 0;
+    }
+    .youtube-theme .shaka-controls-button-panel .shaka-volume-bar-container:hover,
+    .youtube-theme .shaka-controls-button-panel .shaka-volume-bar-container:focus {
+      display: block;
+      width: 50px;
+      opacity: 1;
+      padding: 0 6px;
+    }
+    .youtube-theme .shaka-mute-button:hover + div {
+      opacity: 1;
+      width: 50px;
+      padding: 0 6px;
+    }
+    .youtube-theme .shaka-current-time {
+      padding: 0 10px;
+      font-size: 12px;
+    }
+    .youtube-theme .shaka-seek-bar-container {
+      height: 3px;
+      position: relative;
+      top: -1px;
+      border-radius: 0;
+      margin-bottom: 0;
+    }
+    .youtube-theme .shaka-seek-bar-container .shaka-range-element {
+      opacity: 0;
+    }
+    .youtube-theme .shaka-seek-bar-container:hover {
+      height: 5px;
+      top: 0;
+      cursor: pointer;
+    }
+    .youtube-theme .shaka-seek-bar-container:hover .shaka-range-element {
+      opacity: 1;
+      cursor: pointer;
+    }
+    .youtube-theme .shaka-seek-bar-container input[type=range]::-webkit-slider-thumb {
+      background: #FF0000;
+      cursor: pointer;
+    }
+    .youtube-theme .shaka-seek-bar-container input[type=range]::-moz-range-thumb {
+      background: #FF0000;
+      cursor: pointer;
+    }
+    .youtube-theme .shaka-seek-bar-container input[type=range]::-ms-thumb {
+      background: #FF0000;
+      cursor: pointer;
+    }
+    .youtube-theme .shaka-video-container * {
+      font-family: 'Roboto', sans-serif;
+    }
+    .youtube-theme .shaka-video-container .material-icons-round {
+      font-family: 'Material Icons Sharp';
+    }
+    .youtube-theme .shaka-overflow-menu,
+    .youtube-theme .shaka-settings-menu {
+      border-radius: 2px;
+      background: rgba(28, 28, 28, 0.9);
+      text-shadow: 0 0 2px rgb(0 0 0%);
+      -webkit-transition: opacity 0.1s cubic-bezier(0, 0, 0.2, 1);
+      transition: opacity 0.1s cubic-bezier(0, 0, 0.2, 1);
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -webkit-user-select: none;
+      right: 10px;
+      bottom: 50px;
+      padding: 8px 0;
+      min-width: 200px;
+    }
+    .youtube-theme .shaka-settings-menu {
+      padding: 0 0 8px 0;
+    }
+    .youtube-theme .shaka-settings-menu button {
+      font-size: 12px;
+    }
+    .youtube-theme .shaka-settings-menu button span {
+      margin-left: 33px;
+      font-size: 13px;
+    }
+    .youtube-theme .shaka-settings-menu button[aria-selected="true"] {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+    }
+    .youtube-theme .shaka-settings-menu button[aria-selected="true"] span {
+      -webkit-box-ordinal-group: 3;
+          -ms-flex-order: 2;
+              order: 2;
+      margin-left: 0;
+    }
+    .youtube-theme .shaka-settings-menu button[aria-selected="true"] i {
+      -webkit-box-ordinal-group: 2;
+          -ms-flex-order: 1;
+              order: 1;
+      font-size: 18px;
+      padding-left: 5px;
+    }
+    .youtube-theme .shaka-overflow-menu button {
+      padding: 0;
+    }
+    .youtube-theme .shaka-overflow-menu button i {
+      display: none;
+    }
+    .youtube-theme .shaka-overflow-menu button .shaka-overflow-button-label {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: justify;
+          -ms-flex-pack: justify;
+              justify-content: space-between;
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+          -ms-flex-direction: row;
+              flex-direction: row;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      cursor: default;
+      outline: none;
+      height: 40px;
+      -webkit-box-flex: 0;
+          -ms-flex: 0 0 100%;
+              flex: 0 0 100%;
+    }
+    .youtube-theme .shaka-overflow-menu button .shaka-overflow-button-label span {
+      -ms-flex-negative: initial;
+          flex-shrink: initial;
+      padding-left: 15px;
+      font-size: 13px;
+      font-weight: 500;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+    }
+    .youtube-theme .shaka-overflow-menu span + span {
+      color: #FFF;
+      font-weight: 400 !important;
+      font-size: 12px !important;
+      padding-right: 8px;
+      padding-left: 0 !important;
+    }
+    .youtube-theme .shaka-overflow-menu span + span:after {
+      content: "navigate_next";
+      font-family: 'Material Icons Sharp';
+      font-size: 20px;
+    }
+    .youtube-theme .shaka-overflow-menu .shaka-pip-button span + span {
+      padding-right: 15px !important;
+    }
+    .youtube-theme .shaka-overflow-menu .shaka-pip-button span + span:after {
+      content: "";
+    }
+    .youtube-theme .shaka-back-to-overflow-button {
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 12px;
+      color: #eee;
+      height: 40px;
+    }
+    .youtube-theme .shaka-back-to-overflow-button .material-icons-round {
+      font-size: 15px;
+      padding-right: 10px;
+    }
+    .youtube-theme .shaka-back-to-overflow-button span {
+      margin-left: 3px !important;
+    }
+    .youtube-theme .shaka-overflow-menu button:hover,
+    .youtube-theme .shaka-settings-menu button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+    }
+    .youtube-theme .shaka-overflow-menu button:hover label,
+    .youtube-theme .shaka-settings-menu button:hover label {
+      cursor: pointer;
+    }
+    .youtube-theme .shaka-overflow-menu button:focus,
+    .youtube-theme .shaka-settings-menu button:focus {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: none;
+      outline: none;
+    }
+    .youtube-theme .shaka-overflow-menu button,
+    .youtube-theme .shaka-settings-menu button {
+      color: #EEE;
+    }
+    .youtube-theme .shaka-captions-off {
+      color: #BFBFBF;
+    }
+    .youtube-theme .shaka-overflow-menu-button {
+      font-size: 18px;
+      margin-right: 5px;
+    }
+    .youtube-theme .shaka-fullscreen-button:hover {
+      font-size: 25px;
+      -webkit-transition: font-size 0.1s cubic-bezier(0, 0, 0.2, 1);
+      transition: font-size 0.1s cubic-bezier(0, 0, 0.2, 1);
+    }
+
+    /* Hide center loading spinner */
+    .shaka-spinner-container,
+    .shaka-spinner,
+    .shaka-spinner-svg {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+    }
+
+    /* Custom Seek Bar Colors */
+    .youtube-theme .shaka-seek-bar {
+      background: rgba(255,255,255,.2) !important;
+    }
+    
+    .youtube-theme .shaka-buffered-range {
+      background: rgba(255,255,255,.4) !important;
+    }
+    
+    .youtube-theme .shaka-played-range {
+      background: rgb(255,0,0) !important;
+    }
+
+    </style>
+ 
+ 
+  <div class="shaka-video-container youtube-theme" data-shaka-player>
+   <video id="video" autoplay muted playsinline preload="auto" src=""></video>
+  </div>
+
+<script>
+
+if (confirm("Join Our Telegram Channel To Watch Live Matchs")) {
+window.location.href = "https://t.me/+9uZZUzCPaT9mNWQ9";
+
+}
+
+</script>
+
+  <script>  
+
+        const _0xd0e36b=_0x3ebb;(function(_0x3aae24,_0x1eef25){const _0x7fbd5a=_0x3ebb,_0xb52545=_0x3aae24();while(!![]){try{const _0xba7095=parseInt(_0x7fbd5a(0x13b))/0x1*(-parseInt(_0x7fbd5a(0x122))/0x2)+-parseInt(_0x7fbd5a(0x131))/0x3*(parseInt(_0x7fbd5a(0x16c))/0x4)+-parseInt(_0x7fbd5a(0x123))/0x5+parseInt(_0x7fbd5a(0x16e))/0x6+parseInt(_0x7fbd5a(0x15a))/0x7+parseInt(_0x7fbd5a(0x138))/0x8+-parseInt(_0x7fbd5a(0x127))/0x9;if(_0xba7095===_0x1eef25)break;else _0xb52545['push'](_0xb52545['shift']());}catch(_0x7327bf){_0xb52545['push'](_0xb52545['shift']());}}}(_0x1a7a,0xbaf1e));function getUrlParam(_0x570f85){const _0x380e1b=_0x3ebb;var _0x9d1600=new RegExp(_0x380e1b(0x12a)+_0x570f85+_0x380e1b(0x154)),_0x1f48c0=window[_0x380e1b(0x136)][_0x380e1b(0x172)][_0x380e1b(0x151)](0x1)['match'](_0x9d1600);if(_0x1f48c0!=null)return unescape(_0x1f48c0[0x2]);return null;}var urld=getUrlParam('id'),m3url=getUrlParam('url');let neonActive=!![],player,sharedHdnea='';function _0x3ebb(_0x396fe2,_0x4baf0c){_0x396fe2=_0x396fe2-0x11c;const _0x1a7afa=_0x1a7a();let _0x3ebb0e=_0x1a7afa[_0x396fe2];return _0x3ebb0e;}async function initPlayer(){const _0x5f1634=_0x3ebb;shaka['polyfill']['installAll']();if(!shaka[_0x5f1634(0x166)][_0x5f1634(0x17b)]()){console[_0x5f1634(0x14f)](_0x5f1634(0x175));return;}const _0x51f428=document[_0x5f1634(0x125)](_0x5f1634(0x150));player=new shaka['Player'](_0x51f428);const _0x5c030d=new shaka['ui'][(_0x5f1634(0x129))](player,document['querySelector'](_0x5f1634(0x134)),_0x51f428),_0x4fbb5d={'seekBarColors':{'base':'rgba(255,255,255,.2)','buffered':'rgba(255,255,255,.4)','played':_0x5f1634(0x174)},'controlPanelElements':[_0x5f1634(0x171),_0x5f1634(0x12f),_0x5f1634(0x173),_0x5f1634(0x13d),_0x5f1634(0x12e),_0x5f1634(0x169),'language',_0x5f1634(0x156),_0x5f1634(0x17f),_0x5f1634(0x160)]};_0x5c030d[_0x5f1634(0x11f)](_0x4fbb5d);const _0x15cf86=_0x5c030d[_0x5f1634(0x144)]();player[_0x5f1634(0x11f)]({'drm':{'clearKeys':{}},'streaming':{'bufferingGoal':0xa,'rebufferingGoal':0x2,'bufferBehind':0xf,'retryParameters':{'timeout':0x3a98,'maxAttempts':0x5,'baseDelay':0x1f4,'backoffFactor':1.2},'segmentRequestTimeout':0x1f40,'useNativeHlsOnSafari':!![],'lowLatencyMode':!![],'jumpLargeGaps':!![],'inaccurateManifestTolerance':0.5},'manifest':{'retryParameters':{'timeout':0x2710,'maxAttempts':0x3}}}),player['getNetworkingEngine']()['registerRequestFilter']((_0x33b26b,_0x3ece6e)=>{const _0x4431f1=_0x5f1634;_0x3ece6e[_0x4431f1(0x167)][_0x4431f1(0x12c)]='https://www.jiotv.com/',_0x3ece6e[_0x4431f1(0x167)][_0x4431f1(0x15c)]=_0x4431f1(0x157);}),player['addEventListener']('error',_0x270246=>{const _0xb7a1a6=_0x5f1634;console[_0xb7a1a6(0x14f)]('Shaka\x20Player\x20Error:',_0x270246[_0xb7a1a6(0x11d)]);}),_0x51f428[_0x5f1634(0x14a)](_0x5f1634(0x15f),()=>{const _0x4e13d1=_0x5f1634;!document[_0x4e13d1(0x141)]&&document['querySelector'](_0x4e13d1(0x134))[_0x4e13d1(0x16f)]()[_0x4e13d1(0x179)](()=>{});},{'once':!![]});}function _0x1a7a(){const _0x1199f4=['innerHTML','net','Player','headers','find','quality','hdnea','vibrate','96bTmKzP','0\x200\x2015px\x20var(--neon-color,\x20#00f),\x200\x200\x2030px\x20var(--neon-color,\x20#00f),\x200\x200\x2045px\x20var(--neon-color,\x20#f0f),\x200\x200\x2060px\x20var(--neon-color,\x20#f0f)','9045024axpltu','requestFullscreen','text','play_pause','search','time_and_duration','rgb(255,0,0)','Browser\x20not\x20supported','startsWith','readyState','#KODIPROP:inputstream.adaptive.license_key=','catch','uris','isBrowserSupported','#EXTHTTP:','Unmute\x20after\x20muted\x20failed,\x20requires\x20user\x20interaction:','RequestType','fullscreen','getNetworkingEngine','style','detail','registerRequestFilter','configure','onload','#EXTVLCOPT:http-user-agent=','1329272QudTpE','442335ljGjcH','name','getElementById','__hdnea__=','12674691QZtZfk','push','Overlay','(^|&)','toLowerCase','Referer','clearAllRequestFilters','spacer','mute','Cookie','35601lDzjAI','userAgent','Channel\x20with\x20ID/Name\x20\x22','[data-shaka-player-container]','url','location','Error\x20fetching\x20M3U:','4795624ziCudJ','boxShadow','<div>No\x20channels\x20found.</div>','1whMbmA','log','restart','logo','key','SEGMENT','fullscreenElement','classList','match','getControls','trim','replace','https://www.jiotv.com/','active','Unmuted\x20autoplay\x20successful','addEventListener','indexOf','load','MANIFEST','includes','error','video','substr','muted','NetworkingEngine','=([^&]*)(&|$)','#EXTINF:','picture_in_picture','plaYtv/7.1.5\x20(Linux;Android\x2013)\x20ExoPlayerLib/2.11.6','Muted\x20autoplay\x20successful','Load\x20error:','7734853eebhvU','add','User-Agent','map','\x22\x20not\x20found.\x20Falling\x20back\x20to\x20the\x20first\x20channel.','play','overflow_menu','remove','mod','Unmuted\x20autoplay\x20failed,\x20trying\x20muted\x20play:'];_0x1a7a=function(){return _0x1199f4;};return _0x1a7a();}function toggleNeon(){const _0x22316a=_0x3ebb,_0xc8f037=document[_0x22316a(0x125)]('video'),_0x50ebf5=document[_0x22316a(0x125)]('neon-toggle');neonActive?(_0xc8f037[_0x22316a(0x11c)]['boxShadow']='none',_0x50ebf5['classList'][_0x22316a(0x161)](_0x22316a(0x148))):(_0xc8f037[_0x22316a(0x11c)][_0x22316a(0x139)]=_0x22316a(0x16d),_0x50ebf5[_0x22316a(0x142)][_0x22316a(0x15b)](_0x22316a(0x148))),neonActive=!neonActive,navigator[_0x22316a(0x16b)]&&navigator[_0x22316a(0x16b)](0x64);}async function fetchM3U(){const _0x2827d5=_0x3ebb;try{const _0x467d75=await fetch(m3url),_0x282d7e=await _0x467d75[_0x2827d5(0x170)]();return parseM3U(_0x282d7e);}catch(_0x2b74e4){return console[_0x2827d5(0x14f)](_0x2827d5(0x137),_0x2b74e4),[];}}function parseM3U(_0x29f5ca){const _0x4414db=_0x3ebb,_0x42d0e3=_0x29f5ca['split']('\x0a')[_0x4414db(0x15d)](_0x403c63=>_0x403c63['trim']()),_0x1a980a=[];let _0x4c7206=null;for(const _0xaa1e86 of _0x42d0e3){if(_0xaa1e86[_0x4414db(0x176)]('#EXTM3U'))continue;else{if(_0xaa1e86[_0x4414db(0x176)](_0x4414db(0x155))){_0x4c7206={};const _0x586fbf=_0xaa1e86[_0x4414db(0x143)](/tvg-id="([^"]+)"\s+group-title="([^"]+)"\s+tvg-logo="([^"]+)"\s*,(.+)/);_0x586fbf&&(_0x4c7206['tvgId']=_0x586fbf[0x1],_0x4c7206[_0x4414db(0x13e)]=_0x586fbf[0x3],_0x4c7206[_0x4414db(0x124)]=_0x586fbf[0x4][_0x4414db(0x145)]());}else{if(_0xaa1e86['startsWith'](_0x4414db(0x178))){const _0x4d069b=_0xaa1e86[_0x4414db(0x143)](/license_key=([^:]+):(.+)/);_0x4d069b&&_0x4c7206&&(_0x4c7206[_0x4414db(0x162)]=_0x4d069b[0x1],_0x4c7206[_0x4414db(0x13f)]=_0x4d069b[0x2]);}else{if(_0xaa1e86[_0x4414db(0x176)](_0x4414db(0x121)))_0x4c7206&&(_0x4c7206[_0x4414db(0x132)]=_0xaa1e86[_0x4414db(0x146)](_0x4414db(0x121),''));else{if(_0xaa1e86[_0x4414db(0x176)](_0x4414db(0x17c))){const _0x2f92f7=_0xaa1e86[_0x4414db(0x143)](/"cookie":"__hdnea__=(.+)"/);_0x2f92f7&&_0x4c7206&&(_0x4c7206['hdnea']=_0x2f92f7[0x1],sharedHdnea=_0x2f92f7[0x1]);}else _0xaa1e86&&!_0xaa1e86['startsWith']('#')&&_0x4c7206&&(_0x4c7206[_0x4414db(0x135)]=_0xaa1e86,_0x1a980a[_0x4414db(0x128)](_0x4c7206),_0x4c7206=null);}}}}}return _0x1a980a;}const customChannels=[];async function loadChannels(){const _0x2a8cdd=_0x3ebb,_0x59910a=await fetchM3U();customChannels['forEach'](_0x1d256e=>{const _0x2e1534=_0x3ebb;_0x1d256e[_0x2e1534(0x16a)]=sharedHdnea;});const _0x54dd5f=[..._0x59910a,...customChannels],_0x4ea64b=document[_0x2a8cdd(0x125)]('channel-list');if(_0x54dd5f['length']===0x0){_0x4ea64b[_0x2a8cdd(0x164)]=_0x2a8cdd(0x13a);return;}let _0x4867f3;const _0x511c56=getUrlParam('id');if(_0x511c56===null||_0x511c56==='')_0x4867f3=_0x54dd5f[0x0];else{if(!isNaN(parseInt(_0x511c56))&&isFinite(_0x511c56)){const _0x4e89fc=parseInt(_0x511c56);_0x4867f3=_0x54dd5f[_0x4e89fc];}else{const _0x553564=decodeURIComponent(_0x511c56)[_0x2a8cdd(0x145)]();_0x4867f3=_0x54dd5f[_0x2a8cdd(0x168)](_0x37c368=>_0x37c368[_0x2a8cdd(0x124)]&&_0x37c368[_0x2a8cdd(0x124)][_0x2a8cdd(0x12b)]()===_0x553564[_0x2a8cdd(0x12b)]());}}_0x4867f3?playChannel(_0x4867f3):(console[_0x2a8cdd(0x14f)](_0x2a8cdd(0x133)+_0x511c56+_0x2a8cdd(0x15e)),playChannel(_0x54dd5f[0x0]));}async function playChannel(_0x492edd){const _0x543965=_0x3ebb;if(!player)await initPlayer();player[_0x543965(0x11f)]({'drm':{'clearKeys':{[_0x492edd['mod']]:_0x492edd[_0x543965(0x13f)]}}}),player[_0x543965(0x180)]()[_0x543965(0x12d)](),player[_0x543965(0x180)]()[_0x543965(0x11e)]((_0xc21a3d,_0x13c3e0)=>{const _0x465ae4=_0x543965;_0x13c3e0[_0x465ae4(0x167)][_0x465ae4(0x12c)]=_0x465ae4(0x147),_0x13c3e0['headers'][_0x465ae4(0x15c)]=_0x492edd['userAgent']||'plaYtv/7.1.5\x20(Linux;Android\x2013)\x20ExoPlayerLib/2.11.6',_0x13c3e0[_0x465ae4(0x167)][_0x465ae4(0x130)]=_0x465ae4(0x126)+(_0x492edd[_0x465ae4(0x16a)]||'');if((_0xc21a3d===shaka[_0x465ae4(0x165)]['NetworkingEngine'][_0x465ae4(0x17e)][_0x465ae4(0x14d)]||_0xc21a3d===shaka[_0x465ae4(0x165)][_0x465ae4(0x153)]['RequestType'][_0x465ae4(0x140)])&&_0x13c3e0[_0x465ae4(0x17a)][0x0][_0x465ae4(0x14b)]('__hdnea__=')===-0x1){const _0x8ae391=_0x13c3e0[_0x465ae4(0x17a)][0x0][_0x465ae4(0x14e)]('?')?'&':'?';_0x13c3e0['uris'][0x0]+=_0x8ae391+(_0x465ae4(0x126)+(_0x492edd['hdnea']||''));}});try{const _0x42db5c=document['getElementById']('video');player[_0x543965(0x14c)](_0x492edd['url']);const _0x3d5e0e=async()=>{const _0x1be744=_0x543965;try{_0x42db5c['muted']=![],await _0x42db5c[_0x1be744(0x15f)](),console['log'](_0x1be744(0x149));}catch(_0xc27972){console['log'](_0x1be744(0x163),_0xc27972),_0x42db5c[_0x1be744(0x152)]=!![],await _0x42db5c[_0x1be744(0x15f)](),console[_0x1be744(0x13c)](_0x1be744(0x158));try{_0x42db5c[_0x1be744(0x152)]=![],await _0x42db5c[_0x1be744(0x15f)](),console['log']('Unmuted\x20after\x20muted\x20successful');}catch(_0x4cfc86){console[_0x1be744(0x13c)](_0x1be744(0x17d),_0x4cfc86);}}};if(_0x42db5c[_0x543965(0x177)]>=0x3)await _0x3d5e0e();else _0x42db5c[_0x543965(0x14a)]('canplay',_0x3d5e0e,{'once':!![]});}catch(_0x5a667c){console[_0x543965(0x14f)](_0x543965(0x159),_0x5a667c);}}window[_0xd0e36b(0x120)]=async()=>{await loadChannels();};
+    </script>
+ 
+</body>   </html>
