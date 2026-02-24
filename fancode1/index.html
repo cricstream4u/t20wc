@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fancode by CineArena</title>
+  <title>Prime english by CineArena</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><defs><linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%231E40AF;stop-opacity:1' /><stop offset='100%' style='stop-color:%233B82F6;stop-opacity:1' /></linearGradient></defs><rect x='5' y='5' width='50' height='50' rx='10' fill='url(%23grad)'/><text x='30' y='38' text-anchor='middle' font-family='Arial, sans-serif' font-size='24' font-weight='bold' fill='white'>CA</text></svg>">
-       
+
+  
   <!-- Shaka Player -->
+  <script src="https://concurfortunes.com/94/cb/a4/94cba44db07324ce70291446a18959c8.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
 
@@ -47,24 +49,66 @@
     .shaka-overflow-button-label,
     .shaka-current-time,
     .shaka-time-container {
-      color: #1e90ff !important;
+      color: dark-blue !important;
     }
 
     .shaka-controls-button svg path {
       fill: #1e90ff !important;
     }
 
-    /* Logo overlay */
-    .video-logo {
-      position: absolute;
-      top: 10px;       /* distance from top */
-      left: 10px;      /* distance from left */
-      width: 65px;    /* adjust size */
-      height: 20px;    /* adjust size */
-      opacity: 0.8;    /* slightly transparent */
-      z-index: 1000;   /* above video but below controls */
-      pointer-events: none; /* click passes through */
-    }
+/* Logo overlay - Responsive */
+.video-logo {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  opacity: 0.8;
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+  /* Responsive sizing */
+  width: clamp(50px, 12vw, 65px);
+  height: auto;
+  aspect-ratio: 65/20; /* Maintain original aspect ratio */
+}
+
+/* Desktop - larger screens */
+@media (min-width: 768px) {
+  .video-logo {
+    width: clamp(65px, 8vw, 80px);
+    top: 15px;
+    left: 15px;
+  }
+}
+
+/* Large desktop screens */
+@media (min-width: 1200px) {
+  .video-logo {
+    width: clamp(80px, 6vw, 100px);
+    top: 20px;
+    left: 20px;
+  }
+}
+
+/* Mobile - smaller screens */
+@media (max-width: 480px) {
+  .video-logo {
+    width: clamp(40px, 10vw, 50px);
+    top: 8px;
+    left: 8px;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 320px) {
+  .video-logo {
+    width: clamp(30px, 8vw, 40px);
+    top: 5px;
+    left: 5px;
+  }
+}
+
+.video-logo:hover {
+  opacity: 1;
+}
   </style>
 </head>
 
@@ -74,9 +118,12 @@
       poster="https://blogger.googleusercontent.com/img/a/AVvXsEiGqaZeRBZ6Y7yV5ZYSRiNRhBa5q9_EMx7R5TJcHd3XJwwHh2YhNOGt76Y4vEcUIjvIaA7W-Tw1RyMLP-4WZwVHA4mk18zwXl7HdSL5WabprIasDOWJO7jpL0zTQB4p_y7X0Rv0xwe-cJ-GvxofAgeRp2FIiNgB90n_b8Cqw0sAaZqVhJg_fi9UyfSO8KY">
     </video>
 
-    <!-- Logo Overlay -->
-    <img class="video-logo" src="https://cricstream4u.github.io/cinearena/cineheader.png" alt="cinearena.live">
+    <!-- Logo Overlay with Telegram Link -->
+    <a href="https://t.me/cine_arena" target="_blank" rel="noopener noreferrer" style="display: block;">
+      <img class="video-logo" src="https://t20wc-livid.vercel.app/newlogo.png" alt="cinearena.live">
+    </a>
   </div>
+
 <!-- 🔻 Online Counter (hidden) -->
 <div style="display:none;">
   <script src="//widget.supercounters.com/ssl/online_t.js"></script>
@@ -108,28 +155,30 @@
         controlPanelElements: [
           'play_pause', 'mute', 'volume', 'time_and_duration',
           'spacer', 'language', 'captions', 'picture_in_picture',
-          'quality', 'fullscreen', 'overflow_menu'
+          'quality', 'fullscreen'
         ],
         volumeBarColors: {
           base: 'rgba(135, 206, 235, 0.35)',
-          level: 'rgb(0, 153, 255)'
+          level: 'rgb(255,255,255)'
         },
         seekBarColors: {
-          base: 'rgba(135, 206, 235, 0.3)',
+          base: 'rgba(50, 55, 61)',
           buffered: 'rgba(135, 206, 235, 0.6)',
-          played: 'rgb(0, 153, 255)'
+          played: 'rgb(255, 255, 255)'
         }
       });
 
       // DRM Config
       const drmConfig = {
-        clearKeys: {
-          "065051b99bf5cf8d9a3bde5cbde6aaf9": "214bd176832872339ce184338320f9a2"
-        }
-      };
+        clearKeys: {  
+           "065051b99bf5cf8d9a3bde5cbde6aaf9":"214bd176832872339ce184338320f9a2"
+        }  
+      };  
+  
+      let streamUrl = "https://a166aivottlinear-a.akamaihd.net/OTTB/sin-nitro/live/clients/dash/enc/inpyms8ezu/out/v1/1084d5c9a97a4c5b9f9554c88f486646/cenc.mpd";  
+  
 
-      const streamUrl = "https://a166aivottlinear-a.akamaihd.net/OTTB/sin-nitro/live/clients/dash/enc/inpyms8ezu/out/v1/1084d5c9a97a4c5b9f9554c88f486646/cenc.mpd";
-
+      
       player.configure({
         drm: drmConfig,
         streaming: {
