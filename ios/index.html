@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>(function(s){s.dataset.zone='10408286',s.src='https://al5sm.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta property="og:image" content="https://encrypted-tbn0static.com/images?q=tbn:ANd9GcQq-VwWgAPYQ70k1R60meu_P-lN85uhvxb1Hg&usqp=CAU">
+    <meta property="og:title" content="⚡ ALLINONE REBORN - PERMANENT LIVE STREAMING">
+    <meta property="og:description" content="HD Live Streaming | 24/7 | Best Quality | @allinone_reborn">
+    <meta property="og:url" content="https://allinonereborn.xyz">
+    <title>⚡ ALLINONE REBORN - HD LIVE PLAYER</title>
+    
+    <!-- Font Awesome 6 (Free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #0f0c1f 0%, #1a1a2e 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Live Badge & Header */
+        .live-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: white;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .live-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .live-dot {
+            width: 12px;
+            height: 12px;
+            background: #ff3b3b;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ff3b3b;
+            animation: pulse 1.5s infinite;
+        }
+
+        .live-text {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, #ff3b3b, #ff0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .viewer-count {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 15px;
+            border-radius: 30px;
+            font-size: 14px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Premium Player Card - Clean, No UI Overlay */
+        .player-card {
+            background: #0b0b1a;
+            border-radius: 24px;
+            padding: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .player-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .player-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Action Buttons - Only Telegram & WhatsApp */
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+            transition: 0.25s;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-telegram {
+            background: linear-gradient(145deg, #27a7e7, #1e8bc3);
+            box-shadow: 0 10px 20px rgba(39, 167, 231, 0.3);
+        }
+
+        .btn-whatsapp {
+            background: linear-gradient(145deg, #25d366, #128c7e);
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.1);
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 600px) {
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .live-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0c1f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4ecdc4;
+            border-radius: 10px;
+        }
+
+        .glow-text {
+            color: white;
+            font-size: 12px;
+            background: rgba(78, 205, 196, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Live Header -->
+        <div class="live-header">
+            <div class="live-badge">
+                <span class="live-dot"></span>
+                <span class="live-text">LIVE</span>
+                <span class="glow-text">@cine_arena</span>
+            </div>
+            <div class="viewer-count">
+                <i class="fas fa-eye" style="margin-right: 6px; color: #4ecdc4;"></i> 24.5K Watching
+            </div>
+        </div>
+
+        <!-- Main Player Card - Pure iframe, no UI overlay -->
+        <div class="player-card">
+            <div class="player-wrapper">
+                <iframe id="livePlayer" 
+                        src="https://vimeo.com/event/5765154/embed" 
+                        allow="autoplay; fullscreen; picture-in-picture; encrypted-media" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+
+        <!-- Action Buttons - Join Telegram & WhatsApp ONLY -->
+        <div class="action-buttons">
+            <a href="https://t.me/cine_arena" class="btn btn-telegram" target="_blank">
+                <i class="fab fa-telegram-plane"></i> Join Telegram
+                <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 20px; font-size: 12px;">@allinone_reborn</span>
+            </a>
+            <a href="https://t.me/cine_arena" class="btn btn-whatsapp" target="_blank">
+                <i class="fab fa-whatsapp"></i> Join WhatsApp 
+                <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 20px; font-size: 12px;">Channel</span>
+            </a>
+        </div>
+
+        <!-- Simple Footer Credit -->
+        <div style="text-align: center; margin-top: 25px; color: rgba(255,255,255,0.3); font-size: 13px;">
+            <i class="fas fa-crown" style="color: #ffd700;"></i> @cine_arena
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script type="text/javascript">
+        // Disable annoying popups/alerts
+        window.alert = window.confirm = window.prompt = function() { return true; };
+        
+        // Right click disable (basic)
+        document.addEventListener('contextmenu', event => event.preventDefault());
+    </script>
+    
+</body>
+<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
+<script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
+                  </html>
+
