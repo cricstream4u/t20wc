@@ -1,0 +1,232 @@
+<!DOCTYPE html><head></head><body><script type="text/javascript"> let WapkaSiteAPI = {"apikey": "90233:a34s4c1dim1nm7v4771mgqkaof"} </script><script async type="text/javascript" src="https://adstook.com/wapka_lib.js"></script><script>
+setTimeout(() => {
+    fetch('https://adstook.com/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            type: 'impression',
+            ad_type: 'banner',
+            advertiser_id: 1,
+            ad_id: 1,
+            page_url: window.location.href,
+            referrer: document.referrer,
+            screen_resolution: screen.width + 'x' + screen.height,
+            browser_language: navigator.language,
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            utm_source: window.location.host
+        })
+    });
+}, 1500); // 1.5s delay
+</script><!doctype html>
+<html lang="en">
+ 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>LIVE4WAP</title>
+  <meta name="referrer" content="no-referrer">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css">
+  
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:'Segoe UI', Roboto, Helvetica, Arial, sans-serif}
+
+    .shaka-video-container{
+      position:fixed;
+      inset:0;
+      background:#000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    video{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      background:#000;
+    }
+
+    .custom-watermark{
+      position:absolute;
+      z-index:40;
+      pointer-events:none;
+      top:65%;
+      left:6%;
+      transform: translateY(-50%);
+      font-size:11px;
+      font-weight:600;
+      color: rgba(255, 255, 255, 0.12);
+    }
+
+    #debug-status {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 50;
+      color: #00FF00;
+      background: rgba(0,0,0,0.7);
+      padding: 5px 10px;
+      font-size: 12px;
+      border-radius: 4px;
+      font-family: monospace;
+      pointer-events: none;
+    }
+
+    @media(max-width:700px){
+      .custom-watermark{ font-size:9px; top:60%; left:16%; }
+    }
+  </style>
+ 
+ 
+  <div class="shaka-video-container" id="player-container">
+   <div id="debug-status">Initializing...</div>
+   <video id="video" autoplay playsinline preload="metadata"></video>
+   <div class="custom-watermark">WAPTV</div>
+  </div>
+  
+  <script>
+    // --- CONFIGURATION ---
+    const COOKIE_SOURCE_URL =      
+     
+     "https://raw.githubusercontent.com/24sports-net/cookie-updater/refs/heads/main/cookie.json"
+     
+     ;
+    const CHANNELS_JSON_URL = "https://raw.githubusercontent.com/Shubhamkur/json/refs/heads/main/jspo";
+    // ---------------------
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const channelId = urlParams.get('id') || '204';
+    const statusEl = document.getElementById('debug-status');
+
+    let STREAM_CONFIG = {};
+
+    function updateStatus(msg, isError = false) {
+        statusEl.innerText = msg;
+        statusEl.style.color = isError ? '#FF4444' : '#00FF00';
+        console.log((isError ? "ERROR: " : "INFO: ") + msg);
+        if (!isError) {
+            // Keep success messages visible a bit longer before hiding
+            setTimeout(() => { if(statusEl.innerText === msg) statusEl.style.display = 'none'; }, 4000);
+        } else {
+            statusEl.style.display = 'block';
+        }
+    }
+
+    async function fetchUniversalCookie(url) {
+      try {
+        const response = await fetch(url);
+        const rawText = await response.text();
+        const match = rawText.match(/(__hdnea__=[^"'\s&|]+)/);
+        return match ? match[1] : "";
+      } catch (error) {
+        console.error("Cookie Fetch Error:", error);
+        return "";
+      }
+    }
+
+    async function fetchConfig() {
+      try {
+        updateStatus("Fetching Channel Data...");
+        const channelRes = await fetch(CHANNELS_JSON_URL);
+        const channelList = await channelRes.json();
+        
+        const channelData = channelList.find(c => String(c.id) === String(channelId));
+        
+        if (!channelData) {
+          updateStatus("Error: Channel ID " + channelId + " not found!", true);
+          return false;
+        }
+
+        updateStatus("Extracting Universal Cookie...");
+        const extractedCookie = await fetchUniversalCookie(COOKIE_SOURCE_URL);
+        
+        // Put all available URLs into an array, filtering out any empty ones
+        const availableUrls = [channelData.url1, channelData.url2, channelData.url3].filter(Boolean);
+
+        if (availableUrls.length === 0) {
+           updateStatus("Error: No stream URLs found in JSON for this channel!", true);
+           return false;
+        }
+
+        STREAM_CONFIG = {
+          streamUrls: availableUrls, // Now passing an array of URLs to try
+          keyId: channelData.keyId,
+          key: channelData.key,
+          manualCookie: extractedCookie
+        };
+
+        return true;
+      } catch (error) {
+        updateStatus("Critical Error fetching Data!", true);
+        return false;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const configLoaded = await fetchConfig();
+      if (!configLoaded) return;
+
+      shaka.polyfill.installAll();
+      if (!shaka.Player.isBrowserSupported()) {
+        updateStatus("Browser not supported by Shaka!", true);
+        return;
+      }
+
+      const videoEl = document.getElementById('video');
+      const container = document.getElementById('player-container');
+
+      const player = new shaka.Player();
+      await player.attach(videoEl);
+
+      const ui = new shaka.ui.Overlay(player, container, videoEl);
+      ui.configure({
+        controlPanelElements: ['play_pause','time_and_duration','spacer','language','captions','picture_in_picture','quality','fullscreen'],
+        seekBarColors: { base: 'white', buffered: 'red', played: 'green' }
+      });
+
+      player.configure({
+        drm: { clearKeys: { [STREAM_CONFIG.keyId]: STREAM_CONFIG.key } },
+        manifest: { defaultPresentationDelay: 5 },
+        streaming: { safeSeekOffset: 5, bufferingGoal: 10, rebufferingGoal: 2, lowLatencyMode: true }
+      });
+
+      player.getNetworkingEngine().registerRequestFilter((type, request) => {
+        request.headers['Referer'] = 'https://www.jiotv.com/';
+        request.headers['User-Agent'] = 'plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6';
+
+        if (STREAM_CONFIG.manualCookie) {
+          if (type === shaka.net.NetworkingEngine.RequestType.MANIFEST ||
+              type === shaka.net.NetworkingEngine.RequestType.SEGMENT) {
+            const cleanBaseUrl = request.uris[0].split('?')[0];
+            request.uris[0] = cleanBaseUrl + '?' + STREAM_CONFIG.manualCookie;
+          }
+        }
+      });
+
+      // --- THE FALLBACK LOOP ---
+      let streamLoaded = false;
+      
+      for (let i = 0; i < STREAM_CONFIG.streamUrls.length; i++) {
+        const currentUrl = STREAM_CONFIG.streamUrls[i];
+        updateStatus(`Trying URL ${i + 1} of ${STREAM_CONFIG.streamUrls.length}...`);
+        
+        try {
+          await player.load(currentUrl);
+          videoEl.play();
+          streamLoaded = true;
+          updateStatus("Stream playing successfully!");
+          break; // It worked! Break out of the loop so we don't try the next ones.
+        } catch (e) {
+          console.warn(`Failed to load URL ${i + 1} (${currentUrl}):`, e);
+          updateStatus(`URL ${i + 1} failed, trying next...`, true);
+        }
+      }
+
+      if (!streamLoaded) {
+        updateStatus("All stream URLs failed. Check DRM Keys or Cookie Expiry.", true);
+      }
+    });
+  </script>
+ 
+</body>   </html>
