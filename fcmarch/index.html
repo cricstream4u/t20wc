@@ -1,0 +1,284 @@
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>CineArena.site</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --accent-gold: #FFD700;
+            --accent-red: #ff4d4d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            padding-top: 75px; 
+            padding-bottom: 95px; 
+        }
+
+        /* --- ORIGINAL HEADER --- */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; height: 60px; 
+            z-index: 1000; background: var(--primary-gradient); 
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 15px; box-shadow: 0 2px 10px rgba(0, 114, 255, 0.3);
+        }
+
+        .logo-box a { font-size: 20px; font-weight: 900; text-decoration: none; }
+        .logo-text-white { color: #ffffff; }
+        .logo-text-gold { color: var(--accent-gold); } 
+
+        .header-icons { display: flex; gap: 8px; }
+        .tg-circle {
+            width: 32px; height: 32px; background: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; box-shadow: 0 2px 5px rgba(0,0,0,0.15); border: none;
+        }
+
+        /* --- GRID CONTAINER --- */
+        .grid-container { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 12px; 
+            padding: 10px; 
+            align-items: start;
+        }
+        
+        .exam-card {
+            background: var(--card-bg); border-radius: 15px; padding: 12px 6px;
+            text-align: center; border: 1px solid rgba(0,0,0,0.05); 
+            display: flex; flex-direction: column; align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03); transition: 0.2s; cursor: pointer;
+            min-height: 160px;
+        }
+        .exam-card:active { transform: scale(0.96); }
+
+        .card-icon-bg { 
+            width: 75px; height: 75px; border-radius: 12px; 
+            overflow: hidden; margin-bottom: 8px; background: #f0f0f0;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08); flex-shrink: 0;
+        }
+        .card-icon-bg img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .card-label { 
+            font-size: 10px; font-weight: 700; color: #444; min-height: 38px;
+            line-height: 1.25; margin-bottom: 2px; display: -webkit-box;
+            -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+            word-break: break-word;
+        }
+
+        .status-badge { font-size: 9px; font-weight: 800; margin-top: auto; color: #0072ff; }
+        .status-badge.live { color: var(--accent-red); font-weight: 900; }
+
+        /* --- QUALITY MODAL --- */
+        #quality-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center;
+        }
+        .quality-content { 
+            background: white; width: 85%; max-width: 320px; padding: 25px; 
+            border-radius: 20px; text-align: center; border: 2px solid #0072ff; 
+        }
+        .quality-btn {
+            display: block; width: 100%; padding: 12px; margin: 8px 0;
+            background: #f0f4f8; border: 1px solid #ddd; border-radius: 25px;
+            font-weight: 800; color: #333; cursor: pointer;
+        }
+        .quality-btn:active { background: var(--primary-gradient); color: white; }
+
+        /* --- ORIGINAL BOTTOM NAV --- */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 75px;
+            background: var(--primary-gradient); display: flex;
+            justify-content: space-around; align-items: center; z-index: 1000;
+        }
+        .nav-btn { display: flex; flex-direction: column; align-items: center; flex: 1; cursor: pointer; opacity: 0.7; }
+        .nav-btn.active { opacity: 1; }
+        .nav-svg { width: 28px; height: 28px; margin-bottom: 4px; }
+        .nav-label { font-size: 10px; color: white; font-weight: 700; text-transform: uppercase; }
+        .nav-btn.active .nav-label { color: var(--accent-gold); }
+
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center;
+        }
+        .modal-content { background: white; width: 85%; max-width: 350px; padding: 25px; border-radius: 20px; text-align: center; border: 2px solid #0072ff; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-box">
+            <a href="#"><span class="logo-text-white">CineArena</span><span class="logo-text-gold">.SITE</span></a>
+        </div>
+        <div class="header-icons">
+            <button class="tg-circle" onclick="toggleDisclaimer()"><i class="fas fa-exclamation-triangle" style="color:#FFC107"></i></button>
+            <a href="https://t.me/cine_arena" class="tg-circle" target="_blank"><i class="fab fa-telegram-plane" style="color:#0088cc"></i></a>
+            <a href="https://t.me/cricstream" class="tg-circle" target="_blank"><i class="fas fa-paper-plane" style="color:#ff3b30"></i></a>
+            <a href="https://t.me/cine_arena" class="tg-circle" target="_blank"><i class="fab fa-telegram" style="color:#28a745"></i></a>
+        </div>
+    </header>
+
+    <div id="disclaimer-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 style="color:#0072ff">Disclaimer</h3>
+            <p style="font-size:12px; margin:15px 0; line-height:1.5; color:#555;">This site is not affiliated with any television channel. All content is copyright of their respective owners. We cannot accept any responsibility for the content on this site. We do not host any content.</p>
+            <div style="background:#f0f4f8; padding:10px; border-radius:8px; font-weight:bold; font-size:11px; color:#333;">Contact: Wapgotube@gmail.com</div>
+            <button onclick="toggleDisclaimer()" style="margin-top:15px; background:var(--primary-gradient); color:white; border:none; padding:12px; border-radius:25px; width:100%; font-weight:bold;">Close</button>
+        </div>
+    </div>
+
+    <div id="quality-modal" class="modal-overlay">
+        <div class="quality-content">
+            <h3 style="color:#0072ff; margin-bottom:10px;">Select Quality</h3>
+            <div id="quality-list"></div>
+            <button onclick="closeQuality()" style="margin-top:15px; background:#ff4d4d; color:white; border:none; padding:10px; border-radius:25px; width:100%; font-weight:bold;">CANCEL</button>
+        </div>
+    </div>
+
+    <main class="grid-container" id="main-grid"></main>
+
+    <nav class="bottom-nav">
+        <div class="nav-btn active" onclick="filterBySport('all', this)">
+            <svg class="nav-svg" viewBox="0 0 512 512"><path fill="#FFC107" d="M256 0L0 236h38v276h178v-138h80v138h178V236h38z"/></svg>
+            <span class="nav-label">ALL</span>
+        </div>
+        <div class="nav-btn" onclick="filterBySport('Cricket', this)">
+            <svg class="nav-svg" viewBox="0 0 512 512">
+                <rect x="160" y="150" width="20" height="300" fill="#FFC107"/><rect x="246" y="150" width="20" height="300" fill="#FFC107"/><rect x="332" y="150" width="20" height="300" fill="#FFC107"/>
+                <rect x="150" y="140" width="210" height="15" fill="#795548"/><circle cx="410" cy="410" r="35" fill="#D50000"/>
+            </svg>
+            <span class="nav-label">CRICKET</span>
+        </div>
+        <div class="nav-btn" onclick="filterBySport('Football', this)">
+            <i class="fas fa-futbol nav-svg" style="color: white; font-size: 26px; display: flex; align-items: center; justify-content: center;"></i>
+            <span class="nav-label">FOOTBALL</span>
+        </div>
+        <div class="nav-btn" onclick="filterBySport('Tennis', this)">
+            <i class="fas fa-table-tennis-paddle-ball nav-svg" style="color: white; font-size: 26px; display: flex; align-items: center; justify-content: center;"></i>
+            <span class="nav-label">TENNIS</span>
+        </div>
+    </nav>
+
+    <script>
+        const _0x_api = "https://raw.githubusercontent.com/Jitendra-unatti/fancode/refs/heads/main/data/fancode.json";
+        let allMatches = [];
+        let currentFilter = 'all';
+
+        function toggleDisclaimer() {
+            const m = document.getElementById('disclaimer-modal');
+            m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        async function initApp() {
+            try {
+                const res = await fetch(_0x_api);
+                const data = await res.json();
+                allMatches = data.matches;
+                renderMatches();
+                setInterval(updateLiveUI, 1000);
+            } catch (e) { console.error("Load Error"); }
+        }
+
+        function renderMatches() {
+            const grid = document.getElementById('main-grid');
+            const filtered = (currentFilter === 'all') ? allMatches : allMatches.filter(m => m.category === currentFilter);
+            
+            grid.innerHTML = filtered.map((m) => {
+                const isLive = m.status === "LIVE";
+                const displayImage = m.image_cdn?.APP || m.image;
+                const startTime = new Date(m.startTime).getTime();
+                const mIndex = allMatches.indexOf(m);
+
+                return `
+                <div class="exam-card" onclick="showQualities(${mIndex})" data-start="${startTime}" data-live="${isLive}">
+                    <div class="card-icon-bg"><img src="${displayImage}" onerror="this.src='https://via.placeholder.com/150?text=Sports'"></div>
+                    <div class="card-label">${m.title}</div>
+                    <div class="status-badge ${isLive ? 'live' : ''}">${isLive ? '● LIVE' : '--:--:--'}</div>
+                </div>`;
+            }).join("");
+        }
+
+        function showQualities(index) {
+            const match = allMatches[index];
+            if(match.status !== "LIVE") return alert("Not Live yet!");
+
+            const streamData = match.auto_streams?.[0]?.auto || "";
+            const lines = streamData.split('\n');
+            const list = document.getElementById('quality-list');
+            list.innerHTML = "";
+
+            for (let i = 0; i < lines.length; i++) {
+                if (lines[i].includes('RESOLUTION=')) {
+                    const res = lines[i].split('RESOLUTION=')[1].split(',')[0].split('x')[1] + 'p';
+                    const url = lines[i+1].trim();
+                    
+                    const btn = document.createElement('button');
+                    btn.className = 'quality-btn';
+                    btn.innerText = "Play " + res;
+                    btn.onclick = () => {
+                        window.location.href = `https://tvplaytv.pages.dev/p7?url=${encodeURIComponent(url)}`;
+                    };
+                    list.appendChild(btn);
+                }
+            }
+            document.getElementById('quality-modal').style.display = 'flex';
+        }
+
+        function closeQuality() {
+            document.getElementById('quality-modal').style.display = 'none';
+        }
+
+        function filterBySport(sport, btn) {
+            currentFilter = sport;
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderMatches();
+        }
+
+        function updateLiveUI() {
+            document.querySelectorAll('.exam-card').forEach(card => {
+                if(card.getAttribute('data-live') === "true") return;
+                const diff = parseInt(card.getAttribute('data-start')) - Date.now();
+                const badge = card.querySelector('.status-badge');
+                if(diff <= 0) {
+                    badge.innerHTML = "● LIVE";
+                    badge.classList.add('live');
+                    card.setAttribute('data-live', "true");
+                } else {
+                    const h = Math.floor(diff/3600000), m = Math.floor((diff%3600000)/60000), s = Math.floor((diff%60000)/1000);
+                    badge.innerHTML = `${h}h ${m}m ${s}s`;
+                }
+            });
+        }
+
+        initApp();
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
